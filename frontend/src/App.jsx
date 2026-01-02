@@ -1,11 +1,28 @@
-import React from 'react'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./routes/ProtectedRoute";
+
+import Login from "./pages/Login";
+import Feed from "./pages/Feed";
 
 const App = () => {
   return (
-    <div>
-      <h1>This is going to be the frontend with react of vibely.</h1>
-    </div>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        {/* Public */}
+        <Route path="/" element={<Login />} />
 
-export default App
+        {/* Protected */}
+        <Route
+          path="/feed"
+          element={
+            <ProtectedRoute>
+              <Feed />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
