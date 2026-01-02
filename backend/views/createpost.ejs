@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/vibely-logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Vibely</title>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
+        <div class="max-w-5xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Back Button & Title -->
+                <div class="flex items-center gap-4">
+                    <a href="/" class="text-zinc-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                    </a>
+                    <h1 class="text-xl font-semibold">Create Post</h1>
+                </div>
+                
+                <!-- Cancel Button -->
+                <a href="/" 
+                    class="text-zinc-400 hover:text-white font-medium transition duration-200 text-sm">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-2xl mx-auto px-4 py-8">
+        <form action="/createpost" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <!-- User Info -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-lg font-semibold">
+                    <%= userdata.username.charAt(0).toUpperCase()%>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-sm">@<%= userdata.username%></h3>
+                    <p class="text-zinc-400 text-xs"><%= userdata.name%></p>
+                </div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="space-y-2">
+                <label for="content" class="block text-sm font-medium text-zinc-300">
+                    What's on your mind?
+                </label>
+                <textarea 
+                    id="content"
+                    name="content"
+                    rows="8"
+                    placeholder="Share your thoughts..."
+                    class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent resize-none transition"
+                    required
+                ></textarea>
+                <p class="text-zinc-500 text-xs">
+                    <span id="charCount">0</span> / 5000 characters
+                </p>
+            </div>
+
+            <!-- Media Upload Section -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-zinc-300">
+                    Add Media (Optional)
+                </label>
+                
+                <!-- Upload Area -->
+                <div id="uploadArea" class="border-2 border-dashed border-zinc-800 rounded-lg p-8 text-center hover:border-zinc-700 transition cursor-pointer bg-zinc-900/50">
+                    <input 
+                        type="file" 
+                        id="mediaInput" 
+                        name="media"
+                        accept="image/*,video/*"
+                        class="hidden"
+                    >
+                    <div id="uploadPrompt">
+                        <svg class="w-12 h-12 mx-auto mb-3 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                        </svg>
+                        <p class="text-zinc-400 mb-1">Click to upload or drag and drop</p>
+                        <p class="text-zinc-500 text-xs">Images or Videos (Max 50MB)</p>
+                    </div>
+                </div>
+
+                <!-- Preview Area -->
+                <div id="previewArea" class="hidden">
+                    <div class="relative bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden">
+                        <!-- Image Preview -->
+                        <img id="imagePreview" class="hidden w-full h-auto" alt="Preview">
+                        
+                        <!-- Video Preview -->
+                        <video id="videoPreview" class="hidden w-full h-auto" controls></video>
+                        
+                        <!-- Remove Button -->
+                        <button 
+                            type="button"
+                            id="removeMedia"
+                            class="absolute top-3 right-3 w-8 h-8 bg-zinc-950/90 hover:bg-red-600 rounded-full flex items-center justify-center transition group"
+                        >
+                            <svg class="w-5 h-5 text-zinc-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- File Info -->
+                        <div class="p-3 bg-zinc-900/90 border-t border-zinc-800">
+                            <p id="fileName" class="text-sm text-zinc-300"></p>
+                            <p id="fileSize" class="text-xs text-zinc-500"></p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <button 
+                type="submit" 
+                class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md cursor-pointer transition">
+                Post
+            </button>
+
+
+
+            </div>
+        </form>
+    </main>
+    <script src="/scripts/createPost.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="icon" type="image/png" href="/images/vibely-logo.png">
+    <title>Vibely</title>
+</head>
+
+<body class="bg-zinc-950 text-white min-h-screen">
+
+<div class="max-w-3xl mx-auto px-4 py-8">
+
+    <!-- POST CARD -->
+    <article class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+
+        <!-- POST HEADER -->
+        <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <a href="/profile/<%= post.userId.username %>">
+                    <div class="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center text-sm font-semibold">
+                        <%= post.userId.username.charAt(0).toUpperCase() %>
+                    </div>
+                </a>
+
+                <div>
+                    <p class="font-semibold text-sm"><%= post.userId.name %></p>
+                    <p class="text-xs text-zinc-400">@<%= post.userId.username %></p>
+                    <p class="text-xs text-zinc-500">
+                        <%= new Date(post.createdAt).toDateString() %>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- POST CONTENT -->
+        <p class="text-zinc-200 text-sm mb-4 whitespace-pre-wrap">
+            <%= post.content %>
+        </p>
+
+        <% if (post.imageUrl) { %>
+            <img src="<%= post.imageUrl %>" class="w-full max-h-[420px] object-cover rounded-lg mb-4">
+        <% } %>
+
+        <!-- COMMENT COUNT -->
+        <div class="text-sm text-zinc-400 mb-3">
+            <%= comments.length %> comments
+        </div>
+
+    </article>
+
+    <!-- ADD COMMENT -->
+    <div class="mt-6 bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+
+        <% if (currentUser) { %>
+            <form action="/post/<%= post._id%>/comment" method="POST">
+                <textarea
+                    name="text"
+                    rows="3"
+                    placeholder="Write a comment..."
+                    class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none resize-none"
+                    required></textarea>
+
+                <div class="flex justify-end mt-2">
+                    <button
+                        type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                        Comment
+                    </button>
+                </div>
+            </form>
+        <% } else { %>
+            <p class="text-center text-zinc-400 text-sm">
+                <a href="/login" class="text-blue-500 hover:underline">Login</a> to comment
+            </p>
+        <% } %>
+
+    </div>
+
+    <!-- COMMENTS LIST -->
+    <div class="mt-6 space-y-4">
+
+        <% if (comments.length === 0) { %>
+            <p class="text-center text-zinc-500">No comments yet. Be the first to comment.</p>
+        <% } %>
+
+        <% comments.forEach(comment => { %>
+            <div class="flex gap-3">
+                <a href="/profile/<%= comment.userId.username %>">
+                    <div class="w-9 h-9 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-semibold">
+                        <%= comment.userId.username.charAt(0).toUpperCase() %>
+                    </div>
+                </a>
+
+                <div class="flex-1">
+                    <div class="bg-zinc-800 rounded-lg px-3 py-2">
+                        <p class="font-semibold text-sm">
+                            <%= comment.userId.name %>
+                            <span class="text-zinc-400 text-xs ml-2">
+                                @<%= comment.userId.username %>
+                            </span>
+                        </p>
+                        <p class="text-sm text-zinc-200 mt-1">
+                            <%= comment.text %>
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-4 mt-1 ml-2 text-xs text-zinc-500">
+                        <span><%= new Date(comment.createdAt).toDateString() %></span>
+
+                        <% if (currentUser && currentUser._id.toString() === comment.userId._id.toString()) { %>
+                            <form
+                                action="/post/<%= post._id %>/comment/<%= comment._id %>/delete"
+                                method="POST">
+                                <button class="text-red-500 hover:text-red-400 cursor-pointer">Delete</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+</body>
+</html>
