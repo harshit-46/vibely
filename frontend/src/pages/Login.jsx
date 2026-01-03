@@ -137,13 +137,6 @@ export default function LoginPage() {
 
                         {/* Remember Me & Forgot Password */}
                         <div className="flex items-center justify-between">
-                            <label className="flex items-center cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    className="w-4 h-4 rounded border-zinc-700 bg-zinc-800 text-blue-600 focus:ring-2 focus:ring-blue-600 cursor-pointer"
-                                />
-                                <span className="ml-2 text-sm text-zinc-300">Remember me</span>
-                            </label>
                             <a href="#" className="text-sm text-blue-500 hover:text-blue-400 transition-colors duration-200">
                                 Forgot password?
                             </a>

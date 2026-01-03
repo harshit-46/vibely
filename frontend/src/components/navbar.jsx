@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar({ currentUser, currentPage = 'home' }) {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsRef = useRef(null);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (settingsRef.current && !settingsRef.current.contains(event.target)) {
@@ -21,7 +21,6 @@ export default function Navbar({ currentUser, currentPage = 'home' }) {
         alert('Logging out...');
     };
 
-    // Default user if none provided
     const user = currentUser || {
         name: 'John Doe',
         username: 'johndoe',
@@ -33,18 +32,18 @@ export default function Navbar({ currentUser, currentPage = 'home' }) {
             <div className="max-w-5xl mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo/Brand */}
-                    <a href="/" className="flex items-center gap-3 group">
+                    <Link to="/" className="flex items-center gap-3 group">
                         <div className="w-10 h-10 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                             <span className="text-lg font-bold">P</span>
                         </div>
                         <span className="text-xl font-semibold hidden sm:block">PostHub</span>
-                    </a>
+                    </Link>
 
                     {/* Navigation Links */}
                     <nav className="flex items-center gap-1">
                         {/* Home */}
-                        <a
-                            href="/"
+                        <Link
+                            to="/"
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${currentPage === 'home'
                                     ? 'bg-zinc-800 text-white'
                                     : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
@@ -59,11 +58,11 @@ export default function Navbar({ currentUser, currentPage = 'home' }) {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
                             <span className="hidden md:inline text-sm font-medium">Home</span>
-                        </a>
+                        </Link>
 
                         {/* Search */}
-                        <a
-                            href="/search"
+                        <Link
+                            to="/search"
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${currentPage === 'search'
                                     ? 'bg-zinc-800 text-white'
                                     : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
@@ -73,11 +72,11 @@ export default function Navbar({ currentUser, currentPage = 'home' }) {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                             <span className="hidden md:inline text-sm font-medium">Search</span>
-                        </a>
+                        </Link>
 
                         {/* Create Post (Mobile: Icon only, Desktop: Button) */}
-                        <a
-                            href="/createpost"
+                        <Link
+                            to="/createpost"
                             className={`md:hidden flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${currentPage === 'createpost'
                                     ? 'bg-zinc-800 text-white'
                                     : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
@@ -86,20 +85,20 @@ export default function Navbar({ currentUser, currentPage = 'home' }) {
                             <svg className="w-5 h-5 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
                             </svg>
-                        </a>
-                        <a
-                            href="/createpost"
+                        </Link>
+                        <Link
+                            to="/createpost"
                             className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
                             </svg>
                             <span>New Post</span>
-                        </a>
+                        </Link>
 
                         {/* Profile */}
-                        <a
-                            href="/profile"
+                        <Link
+                            to="/profile"
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${currentPage === 'profile'
                                     ? 'bg-zinc-800 text-white'
                                     : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
@@ -122,7 +121,7 @@ export default function Navbar({ currentUser, currentPage = 'home' }) {
                                 </svg>
                             )}
                             <span className="hidden md:inline text-sm font-medium">Profile</span>
-                        </a>
+                        </Link>
 
                         {/* Settings Dropdown */}
                         <div className="relative" ref={settingsRef}>
@@ -167,78 +166,78 @@ export default function Navbar({ currentUser, currentPage = 'home' }) {
 
                                 {/* Settings Links */}
                                 <div className="py-2">
-                                    <a
-                                        href="/settings/account"
+                                    <Link
+                                        to="/settings/account"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors duration-200"
                                     >
                                         <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
                                         Account Settings
-                                    </a>
+                                    </Link>
 
-                                    <a
-                                        href="/settings/privacy"
+                                    <Link
+                                        to="/settings/privacy"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors duration-200"
                                     >
                                         <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                         </svg>
                                         Privacy & Security
-                                    </a>
+                                    </Link>
 
-                                    <a
-                                        href="/settings/notifications"
+                                    <Link
+                                        to="/settings/notifications"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors duration-200"
                                     >
                                         <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                         </svg>
                                         Notifications
-                                    </a>
+                                    </Link>
 
-                                    <a
-                                        href="/settings/appearance"
+                                    <Link
+                                        to="/settings/appearance"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors duration-200"
                                     >
                                         <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                                         </svg>
                                         Appearance
-                                    </a>
+                                    </Link>
 
-                                    <a
-                                        href="/settings/blocked"
+                                    <Link
+                                        to="/settings/blocked"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors duration-200"
                                     >
                                         <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                                         </svg>
                                         Blocked Users
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 {/* Help & Support */}
                                 <div className="py-2 border-t border-zinc-800">
-                                    <a
-                                        href="/help"
+                                    <Link
+                                        to="/help"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors duration-200"
                                     >
                                         <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                         Help & Support
-                                    </a>
+                                    </Link>
 
-                                    <a
-                                        href="/about"
+                                    <Link
+                                        to="/about"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors duration-200"
                                     >
                                         <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                         About
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 {/* Logout */}
