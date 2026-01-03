@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useAuth } from "../context/useAuth";
+import { Navigate } from "react-router-dom";
 
 export default function LoginPage() {
+    const { user, loading, login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -8,6 +11,12 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+
+    if (loading) return null;
+
+    if (user) {
+        return <Navigate to="/feed" replace />;
+    }
 
     const handleChange = (e) => {
         setFormData({
@@ -17,29 +26,32 @@ export default function LoginPage() {
         setError('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
-        setError('');
 
-        // Simulate API call
-        setTimeout(() => {
-            if (formData.email && formData.password) {
-                alert('Login successful!');
-                // In real app: redirect to home page
-            } else {
-                setError('Please fill in all fields');
-            }
-            setIsLoading(false);
-        }, 1000);
+        if (!formData.email || !formData.password) {
+            setError("Please fill in all fields");
+            return;
+        }
+
+        try {
+            setIsSubmitting(true);
+            setError("");
+            await login(formData);
+        } catch (err) {
+            setError(
+                err?.response?.data?.message || "Invalid email or password"
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     };
-
     return (
         <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4 py-8">
             <div className="w-full max-w-md">
                 {/* Logo/Brand */}
                 <div className="text-center mb-8">
-                
+
                     <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
                     <p className="text-zinc-400 text-sm">Sign in to continue to Vibely</p>
                 </div>
@@ -165,7 +177,7 @@ export default function LoginPage() {
                 {/* Sign Up Link */}
                 <p className="text-center text-zinc-400 text-sm mt-6">
                     Don't have an account?{' '}
-                    <a href="#" className="text-blue-500 hover:text-blue-400 font-medium transition-colors duration-200">
+                    <a href="/signup" className="text-blue-500 hover:text-blue-400 font-medium transition-colors duration-200">
                         Sign up
                     </a>
                 </p>

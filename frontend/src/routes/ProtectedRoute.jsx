@@ -1,20 +1,15 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
-    // 1️⃣ Wait until auth check finishes
-    if (loading) {
-        return <div className="text-center mt-10">Loading...</div>;
-    }
+    if (loading) return null;
 
-    // 2️⃣ If not logged in → redirect to login
     if (!user) {
         return <Navigate to="/" replace />;
     }
 
-    // 3️⃣ If logged in → show page
     return children;
 };
 
