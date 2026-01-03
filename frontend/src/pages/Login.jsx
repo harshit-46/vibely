@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from "../context/useAuth";
+import { Link } from 'react-router-dom';
 import { Navigate } from "react-router-dom";
 
 export default function Login() {
@@ -136,9 +137,9 @@ export default function Login() {
 
                         {/* Remember Me & Forgot Password */}
                         <div className="flex items-center justify-between">
-                            <a href="#" className="text-sm text-blue-500 hover:text-blue-400 transition-colors duration-200">
+                            <Link to="/resetpassword" className="text-sm text-blue-500 hover:text-blue-400 transition-colors duration-200">
                                 Forgot password?
-                            </a>
+                            </Link>
                         </div>
 
                         {/* Submit Button */}
