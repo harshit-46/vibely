@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const cors = require('cors');
+const apiAuthRoutes = require("./routes/apiAuth");
 const userModel = require('./models/user');
 const postModel = require('./models/post');
 const commentModel = require('./models/comment')
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("view engine", "ejs");
+app.use("/api/auth", apiAuthRoutes);
 
 app.get("/", (req, res) => {
     if (req.cookies.token) {

@@ -35,7 +35,7 @@ export default function LoginPage() {
         }
 
         try {
-            setIsSubmitting(true);
+            setIsLoading(true);
             setError("");
             await login(formData);
         } catch (err) {
@@ -43,7 +43,7 @@ export default function LoginPage() {
                 err?.response?.data?.message || "Invalid email or password"
             );
         } finally {
-            setIsSubmitting(false);
+            setIsLoading(false);
         }
     };
     return (
