@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 
 export default function Post({ post, currentUser, onLike, onComment, onDelete }) {
     const [showComments, setShowComments] = useState(false);
