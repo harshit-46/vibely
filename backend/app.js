@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const cors = require('cors');
 const userModel = require('./models/user');
 const postModel = require('./models/post');
 const commentModel = require('./models/comment')
@@ -11,8 +12,14 @@ const isLoggedIn = require('./middlewares/isLoggedin');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -31,7 +38,7 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-    const { username, name , email, password } = req.body;
+    const { username, name, email, password } = req.body;
 
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
@@ -56,12 +63,12 @@ app.post("/register", async (req, res) => {
     res.redirect("/home");
 });
 
-app.get("/home" , isLoggedIn , async (req,res) => {
+app.get("/home", isLoggedIn, async (req, res) => {
     const posts = await postModel
         .find()
         .populate("userId", "username")
         .sort({ createdAt: -1 });
-    res.render("home" , {user : req.user , posts});
+    res.render("home", { user: req.user, posts });
 });
 
 app.post("/login", async (req, res) => {
@@ -90,10 +97,10 @@ app.post("/logout", (req, res) => {
 
 app.get("/createpost", isLoggedIn, (req, res) => {
     let userdata = req.user;
-    res.render("createpost" , {userdata});
+    res.render("createpost", { userdata });
 });
 
-app.post("/createpost", isLoggedIn, upload.single("media") , async (req, res) => {
+app.post("/createpost", isLoggedIn, upload.single("media"), async (req, res) => {
     const postData = {
         content: req.body.content,
         userId: req.user._id
@@ -110,21 +117,21 @@ app.post("/createpost", isLoggedIn, upload.single("media") , async (req, res) =>
 
 app.get("/profile", isLoggedIn, async (req, res) => {
     let userdata = req.user;
-    let posts = await postModel.find({ userId: userdata._id }).sort({createdAt : -1});
-    res.render("profile", { userdata ,posts });
+    let posts = await postModel.find({ userId: userdata._id }).sort({ createdAt: -1 });
+    res.render("profile", { userdata, posts });
 });
 
-app.get("/profile/:name" , async (req,res) => {
+app.get("/profile/:name", async (req, res) => {
     let username = req.params.name;
-    let userdata = await userModel.findOne({username});
+    let userdata = await userModel.findOne({ username });
 
-    if(!userdata) return res.send("user not found");
-    let posts = await postModel.find({userId : userdata._id}).sort({createdAt : -1});
-    res.render("profile" , {userdata , posts});
+    if (!userdata) return res.send("user not found");
+    let posts = await postModel.find({ userId: userdata._id }).sort({ createdAt: -1 });
+    res.render("profile", { userdata, posts });
 });
 
-app.get("/search" , async (req,res) => {
-    res.render("search" , {users : []});
+app.get("/search", async (req, res) => {
+    res.render("search", { users: [] });
 });
 
 app.get("/api/search", async (req, res) => {
