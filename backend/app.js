@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const cors = require('cors');
 const apiAuthRoutes = require("./routes/apiAuth");
+const apiPostRoutes = require("./routes/apiPosts");
 const userModel = require('./models/user');
 const postModel = require('./models/post');
 const commentModel = require('./models/comment')
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("view engine", "ejs");
 app.use("/api/auth", apiAuthRoutes);
+app.use("/api/posts", apiPostRoutes);
 
 app.get("/", (req, res) => {
     if (req.cookies.token) {

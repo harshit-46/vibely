@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import Post from '../components/Post';
 import Navbar from '../components/navbar';
+import { useAuth } from '../context/useAuth';
 
 export default function FeedPage() {
+    const {user} = useAuth();
     const [posts, setPosts] = useState([]);
 
-    const currentUser = {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150?img=1'
-    }; // dummy
+    const currentUser = user;
 
     const handleLike = (postId) => {
         setPosts(posts.map(post => {
@@ -55,9 +53,12 @@ export default function FeedPage() {
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white">
-            <Navbar/>
+            <Navbar />
+            <p>Posts will be displayed here</p>
+
+{/** 
             <main className="max-w-3xl mx-auto px-4 py-8">
-                {/* Create Post Section */}
+
                 <section className="mb-8">
                     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
@@ -79,7 +80,7 @@ export default function FeedPage() {
                     </div>
                 </section>
 
-                {/* Posts Feed */}
+
                 <section>
                     <h2 className="text-lg font-semibold mb-4 text-zinc-300">Recent Posts</h2>
                     <div className="space-y-4">
@@ -96,6 +97,9 @@ export default function FeedPage() {
                     </div>
                 </section>
             </main>
+
+**/}
+
         </div>
     );
 }

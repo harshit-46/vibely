@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import Navbar from '../components/navbar';
+import { useAuth } from '../context/useAuth';
+import useCreatePost from '../hooks/useCreatePost';
 
 export default function CreatePost() {
+    const {createPost} = useCreatePost();
+    const {user} = useAuth();
     const [content, setContent] = useState('');
     const [mediaFile, setMediaFile] = useState(null);
     const [mediaPreview, setMediaPreview] = useState(null);
@@ -11,14 +16,10 @@ export default function CreatePost() {
         showLikes: true
     });
 
-    const currentUser = {
-        name: 'John Doe',
-        username: 'johndoe',
-        profileImage: null
-    };
+    const currentUser = user || {};
 
     const charLimit = 5000;
-    const maxFileSize = 50 * 1024 * 1024; // 50MB
+    const maxFileSize = 50 * 1024 * 1024;
 
     const handleMediaChange = (e) => {
         const file = e.target.files[0];
@@ -54,7 +55,7 @@ export default function CreatePost() {
         document.getElementById('mediaInput').value = '';
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!content.trim()) {
@@ -62,19 +63,18 @@ export default function CreatePost() {
             return;
         }
 
-        if (content.length > charLimit) {
-            alert(`Content must be ${charLimit} characters or less`);
-            return;
-        }
-
         setIsLoading(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            alert('Post created successfully!');
+        try {
+            await createPost({
+                content,
+                media: mediaFile,
+            });
+        } catch (err) {
+            console.error(err);
+            alert("Failed to create post");
+        } finally {
             setIsLoading(false);
-            // In real app: redirect to home page
-        }, 1500);
+        }
     };
 
     const formatFileSize = (bytes) => {
@@ -88,24 +88,7 @@ export default function CreatePost() {
     return (
         <div className="min-h-screen bg-zinc-950 text-white">
             {/* Header */}
-            <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
-                <div className="max-w-5xl mx-auto px-6 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <a href="/" className="text-zinc-400 hover:text-white transition">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                            </a>
-                            <h1 className="text-xl font-semibold">Create Post</h1>
-                        </div>
-
-                        <a href="/" className="text-zinc-400 hover:text-white font-medium transition duration-200 text-sm">
-                            Cancel
-                        </a>
-                    </div>
-                </div>
-            </header>
+            <Navbar/>
 
             {/* Main Content */}
             <main className="max-w-2xl mx-auto px-4 py-8">

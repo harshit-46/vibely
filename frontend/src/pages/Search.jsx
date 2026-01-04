@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UserCard from '../components/UserCard';
+import Navbar from '../components/navbar';
 
 // Main Search Users Page
 export default function SearchUsersPage() {
@@ -103,29 +104,7 @@ export default function SearchUsersPage() {
     return (
         <div className="min-h-screen bg-zinc-950 text-white">
             {/* Header */}
-            <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
-                <div className="max-w-5xl mx-auto px-6 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <a href="/" className="text-zinc-400 hover:text-white transition">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                            </a>
-                            <h1 className="text-xl font-semibold">Search Users</h1>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                            <a href="/" className="text-zinc-400 hover:text-white font-medium transition duration-200 text-sm">
-                                Home
-                            </a>
-                            <a href="/profile" className="text-zinc-400 hover:text-white font-medium transition duration-200 text-sm">
-                                Profile
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Navbar />
 
             {/* Main Content */}
             <main className="max-w-3xl mx-auto px-4 py-8">
@@ -240,18 +219,6 @@ export default function SearchUsersPage() {
                     )}
                 </section>
             </main>
-
-            {/* Footer */}
-            <footer className="max-w-5xl mx-auto px-6 py-8 mt-12 border-t border-zinc-800">
-                <div className="flex items-center justify-between text-sm">
-                    <p className="text-zinc-500">© 2025 PostHub</p>
-                    <div className="flex items-center gap-6">
-                        <a href="/about" className="text-zinc-400 hover:text-white transition">About</a>
-                        <a href="/terms" className="text-zinc-400 hover:text-white transition">Terms</a>
-                        <a href="/privacy" className="text-zinc-400 hover:text-white transition">Privacy</a>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 }
