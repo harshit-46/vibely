@@ -1,11 +1,11 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Post from '../components/Post';
 import { useAuth } from "../context/useAuth";
 import { Link } from 'react-router-dom';
 import Navbar from '../components/navbar';
 
 export default function ProfilePage() {
-    const {user} = useAuth();
+    const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('posts');
     const [posts, setPosts] = useState([]);
     useEffect(() => {
@@ -14,23 +14,23 @@ export default function ProfilePage() {
                 const response = await fetch(`http://localhost:3000/api/posts/user/${user._id}`,
                     { credentials: "include" }
                 );
-    
+
                 const data = await response.json();
                 setPosts(data.posts);
             } catch (error) {
                 console.error("Error fetching posts:", error);
             }
         };
-    
+
         if (user?._id) {
             fetchPosts();
         }
     }, [user?._id]);
-    
-    const currentUser = {name : user.name , username : user.username , joined : user.createdAt};
+
+    const currentUser = { name: user.name, username: user.username, joined: user.createdAt };
 
     const handleLike = () => {
-        
+
     };
 
     const handleComment = () => {
@@ -38,12 +38,12 @@ export default function ProfilePage() {
     };
 
     const handleDelete = () => {
-        
+
     };
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white">
-            <Navbar/>
+            <Navbar />
             <main className="max-w-3xl mx-auto px-4 py-8">
 
                 <section className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden mb-6">
@@ -96,7 +96,11 @@ export default function ProfilePage() {
                             </div>
                             <div className="text-center ml-auto">
                                 <p className="text-zinc-400 text-xs">Joined</p>
-                                <p className="text-sm font-medium">{currentUser.joined}</p>
+                                <p className="text-sm font-medium">{new Date(currentUser.joined).toLocaleDateString("en-us", {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric"
+                                })}</p>
                             </div>
                         </div>
                     </div>

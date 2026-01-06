@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { timeAgo } from '../utils/timeAgo';
 
 export default function Post({ post, currentUser, onLike, onComment, onDelete }) {
     const [showComments, setShowComments] = useState(false);
@@ -20,21 +22,21 @@ export default function Post({ post, currentUser, onLike, onComment, onDelete })
             {/* Post Header */}
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                    <a href={`/profile/${post.userId.username}`} className="shrink-0">
+                    <Link to={`/profile/${post.userId.username}`} className="shrink-0">
                         <div className="w-11 h-11 rounded-full bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center text-sm font-semibold hover:scale-105 transition">
-                            {post.userId.name}
+                            {post.userId.name.charAt(0).toUpperCase()}
                         </div>
-                    </a>
+                    </Link>
                     <div>
-                        <a href={`/profile/${post.userId.username}`} className="hover:underline">
+                        <Link to={`/profile/${post.userId.username}`} className="hover:underline">
                             <h4 className="font-semibold text-sm text-white">{post.userId.name}</h4>
-                        </a>
+                        </Link>
                         <div className="flex items-center gap-2">
-                            <a href={`/profile/${post.userId.username}`} className="text-zinc-400 text-xs hover:underline">
+                            <Link to={`/profile/${post.userId.username}`} className="text-zinc-400 text-xs hover:underline">
                                 @{post.userId.username}
-                            </a>
+                            </Link>
                             <span className="text-zinc-600">•</span>
-                            <small className="text-zinc-500 text-xs">{post.date}</small>
+                            <small className="text-zinc-500 text-xs">{timeAgo(post.createdAt)}</small>
                         </div>
                     </div>
                 </div>

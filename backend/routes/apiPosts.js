@@ -10,7 +10,7 @@ router.get("/user/:userId", async (req, res) => {
         console.log("Fetching posts for user:", userId);
 
         const posts = await postModel.find({ userId: userId })
-            .populate("userId", "username")
+            .populate("userId", "username name")
             .sort({ createdAt: -1 });
 
         res.status(200).json({
