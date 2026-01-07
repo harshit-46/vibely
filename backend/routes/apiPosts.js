@@ -7,7 +7,6 @@ const isLoggedIn = require("../middlewares/isLoggedin");
 router.get("/user/:userId", async (req, res) => {
     try {
         const { userId } = req.params;
-        console.log("Fetching posts for user:", userId);
 
         const posts = await postModel.find({ userId: userId })
             .populate("userId", "username name")

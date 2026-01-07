@@ -15,10 +15,13 @@ export default function SearchUsersPage() {
     useEffect(() => {
         const fetchUsers = async () => {
             const res = await fetch(
-                `${import.meta.env.VITE_API_BASE_URL}/api/users`
+                "http://localhost:3000/api/users" // ${import.meta.env.VITE_API_BASE_URL}
             );
+            console.log(`fetching from http://localhost:3000/api/users`);
             const data = await res.json();
+            console.log(data);
             setUsers(data.users);
+            console.log(users);
         };
 
         fetchUsers();

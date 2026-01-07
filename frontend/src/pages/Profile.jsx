@@ -22,6 +22,8 @@ export default function ProfilePage() {
             }
         };
 
+        console.log(`http://localhost:3000/api/posts/user/${user._id}`);
+
         if (user?._id) {
             fetchPosts();
         }

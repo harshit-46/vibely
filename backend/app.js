@@ -1,16 +1,8 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const path = require('path');
 const cors = require('cors');
 const apiAuthRoutes = require("./routes/apiAuth");
 const apiPostRoutes = require("./routes/apiPosts");
-const userModel = require('./models/user');
-const postModel = require('./models/post');
-const commentModel = require('./models/comment')
-const upload = require('./middlewares/upload');
 const cookieParser = require('cookie-parser');
-const isLoggedIn = require('./middlewares/isLoggedin');
 require('dotenv').config();
 
 const app = express();
@@ -25,11 +17,15 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.set("view engine", "ejs");
 app.use("/api/auth", apiAuthRoutes);
 app.use("/api/posts", apiPostRoutes);
 
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+/*
 app.get("/", (req, res) => {
     if (req.cookies.token) {
         return res.redirect("/home");
@@ -204,7 +200,4 @@ app.post("/post/:postid/comment/:commentid/delete", isLoggedIn, async (req, res)
     res.redirect(`/post/${postid}`);
 });
 
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+*/
