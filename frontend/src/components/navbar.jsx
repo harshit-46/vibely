@@ -108,7 +108,8 @@ export default function Navbar({ currentPage = 'home' }) {
 
                         {/* Profile */}
                         <Link
-                            to="/profile"
+                            to={`/u/${user.username}`}
+                            
                             className={`flex items-center justify-center gap-2 w-27.5 h-10 rounded-lg transition-all duration-200 ${currentPage === 'profile'
                                     ? 'bg-zinc-800 text-white'
                                     : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'

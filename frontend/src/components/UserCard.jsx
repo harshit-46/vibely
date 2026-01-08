@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function UserCard({ user, currentUser, onFollow }) {
     //const isFollowing = user.followers.includes(currentUser.id);
     const followersCount = user.followers?.length || 0;
@@ -8,17 +10,17 @@ export default function UserCard({ user, currentUser, onFollow }) {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 flex-1">
                     {/* Avatar */}
-                    <a href={`/profile/${user.username}`} className="shrink-0">
+                    <Link to={`/u/${user.username}`} className="shrink-0">
                         <div className={`w-14 h-14 rounded-full bg-linear-to-br ${user.avatarColor} flex items-center justify-center text-lg font-semibold hover:scale-105 transition`}>
                             {user.name.charAt(0)}
                         </div>
-                    </a>
+                    </Link>
 
                     {/* User Info */}
                     <div className="flex-1 min-w-0">
-                        <a href={`/profile/${user.username}`} className="block hover:underline">
+                        <Link to={`/u/${user.username}`} className="block hover:underline">
                             <h3 className="font-semibold text-white">{user.name}</h3>
-                        </a>
+                        </Link>
                         <p className="text-zinc-400 text-sm">@{user.username}</p>
                         <p className="text-zinc-500 text-xs mt-1 line-clamp-2">
                             {user.bio}

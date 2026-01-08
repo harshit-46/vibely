@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/feed" element={ <ProtectedRoute> <Feed /> </ProtectedRoute> }/>
         <Route path="/search" element={ <ProtectedRoute> <Search /> </ProtectedRoute> }/>
         <Route path="/createpost" element={ <ProtectedRoute> <CreatePost /> </ProtectedRoute> }/>
-        <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> }/>
+        <Route path="/u/:username" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> }/>
       </Routes>
   );
 };
