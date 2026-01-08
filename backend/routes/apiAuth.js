@@ -50,37 +50,50 @@ router.post("/register", async (req, res) => {
 
 /* LOGIN */
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+    try {
+        const { identifier, password } = req.body;
 
-    const user = await userModel.findOne({ email });
-    if (!user) {
-        return res.status(400).json({ message: "Invalid credentials" });
+        if (!identifier || !password) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const user = await userModel.findOne({
+            $or: [
+                { email: identifier },
+                { username: identifier }]
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        const match = bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        const token = jwt.sign(
+            { id: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: "lax",
+        });
+
+        res.json({
+            user: {
+                _id: user._id,
+                name: user.name,
+                username: user.username,
+                email: user.email,
+            },
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Server Error" });
     }
-
-    const match = bcrypt.compare(password, user.password);
-    if (!match) {
-        return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const token = jwt.sign(
-        { id: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-    );
-
-    res.cookie("token", token, {
-        httpOnly: true,
-        sameSite: "lax",
-    });
-
-    res.json({
-        user: {
-            _id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email,
-        },
-    });
 });
 
 /* LOGOUT */

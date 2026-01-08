@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 export default function Login() {
     const { user, loading, login } = useAuth();
     const [formData, setFormData] = useState({
-        email: '',
+        identifier: '',
         password: '',
     });
     const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +30,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.email || !formData.password) {
+        if (!formData.identifier || !formData.password) {
             setError("Please fill in all fields");
             return;
         }
@@ -41,7 +41,7 @@ export default function Login() {
             await login(formData);
         } catch (err) {
             setError(
-                err?.response?.data?.message || "Invalid email or password"
+                err?.response?.data?.message || "Invalid username or password"
             );
         } finally {
             setIsLoading(false);
@@ -74,7 +74,7 @@ export default function Login() {
                         {/* Email Field */}
                         <div className="space-y-2">
                             <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
-                                Email Address
+                                Username/Email
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -83,12 +83,12 @@ export default function Login() {
                                     </svg>
                                 </div>
                                 <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
+                                    type="text"
+                                    id="identifier"
+                                    name="identifier"
+                                    value={formData.identifier}
                                     onChange={handleChange}
-                                    placeholder="you@example.com"
+                                    placeholder="username or email"
                                     className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-200"
                                     required
                                 />

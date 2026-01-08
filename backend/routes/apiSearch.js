@@ -4,7 +4,7 @@ const userModel = require("../models/user");
 
 router.get("/", async (req, res) => {
     try {
-        const query = req.query.query || "";
+        const query = req.query.query?.trim();
 
         if (!query.trim()) {
             return res.json([]);

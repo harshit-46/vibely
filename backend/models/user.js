@@ -3,9 +3,19 @@ const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/vibely");
 
 const userSchema = new mongoose.Schema({
-    username : String,
+    username : {
+        type : String,
+        unique : true,
+        required : true,
+        trim : true
+    },
     name : String,
-    email : String,
+    email : {
+        type : String,
+        unique : true,
+        required : true,
+        lowercase : true
+    },
     password : String,
     profileImage : {
         type : String,

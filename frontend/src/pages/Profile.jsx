@@ -14,16 +14,13 @@ export default function ProfilePage() {
                 const response = await fetch(`http://localhost:3000/api/posts/user/${user._id}`,
                     { credentials: "include" }
                 );
-
                 const data = await response.json();
-                console.log("Data is : ",data);
+
                 setPosts(data.posts);
             } catch (error) {
                 console.error("Error fetching posts:", error);
             }
         };
-
-        console.log(`http://localhost:3000/api/posts/user/${user._id}`);
 
         if (user?._id) {
             fetchPosts();
