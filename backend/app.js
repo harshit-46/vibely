@@ -22,6 +22,10 @@ app.use("/api/auth", apiAuthRoutes);
 app.use("/api/posts", apiPostRoutes);
 app.use("/api/search" , apiSearchRoutes);
 
+app.get("/", (req, res) => {
+    res.status(200).send("Vibely API running 🚀");
+});  
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

@@ -58,7 +58,7 @@ export default function Login() {
 
                 {/* Login Card */}
                 <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-xl">
-                    <div className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Error Message */}
                         {error && (
                             <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
@@ -144,7 +144,7 @@ export default function Login() {
 
                         {/* Submit Button */}
                         <button
-                            onClick={handleSubmit}
+                            type="submit"
                             disabled={isLoading}
                             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
                         >
@@ -165,7 +165,7 @@ export default function Login() {
                                 </>
                             )}
                         </button>
-                    </div>
+                    </form>
                 </div>
                 {/* Sign Up Link */}
                 <p className="text-center text-zinc-400 text-sm mt-6">
