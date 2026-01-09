@@ -2,21 +2,42 @@ import React, { useState, useEffect } from 'react';
 import Post from '../components/Post';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from '../components/navbar';
+import { useAuth } from '../context/useAuth';
 
 export default function ProfilePage() {
     const { username } = useParams();
     const [profileUser, setProfileUser] = useState(null);
     const [activeTab, setActiveTab] = useState('posts');
     const [posts, setPosts] = useState([]);
-    useEffect(() => {
+    const [loading, setLoading] = useState(true);
+    //const [isFollowing, setIsFollowing] = useState(false);
+    //const [followersCount, setFollowersCount] = useState(0);
+    //const [followingCount, setFollowingCount] = useState(0);
 
+    const currentUser = useAuth();
+    const currentUserName = currentUser?.user?.username || null;
+
+
+    useEffect(() => {
         const fetchUserAndPosts = async () => {
             try {
-                const userResponse = await fetch(`http://localhost:3000/api/users/u/${username}`, { credentials: "include" });
+                setLoading(true);
+                const userResponse = await fetch(`http://localhost:3000/api/users/u/${username}`, {
+                    credentials: "include"
+                });
                 const userData = await userResponse.json();
                 setProfileUser(userData.user);
 
                 const profileId = userData.user._id;
+
+                // Check if current user is following this profile
+                //if (currentUser) {
+                // setIsFollowing(userData.user.followers?.includes(currentUser._id) || false);
+                //}
+
+                // Set followers/following counts
+                //setFollowersCount(userData.user.followers?.length || 0);
+                //setFollowingCount(userData.user.following?.length || 0);
 
                 const postResponse = await fetch(`http://localhost:3000/api/posts/user/${profileId}`,
                     { credentials: "include" }
@@ -27,27 +48,46 @@ export default function ProfilePage() {
             } catch (error) {
                 console.error("Error fetching user:", error);
             }
+            finally {
+                setLoading(false);
+            }
         }
 
-        if (username) {
-            fetchUserAndPosts();
+        if (!username) {
+            return;
         }
+        fetchUserAndPosts();
     }, [username]);
 
-    const handleLike = () => {
 
+
+    // HardCoded as of now
+    const isFollowing = false;
+    const followersCount = 777;
+    const followingCount = 77;
+
+
+    const handleFollow = async () => {
+    };
+
+    const handleUnfollow = async () => {
+    };
+
+    const handleLike = () => {
     };
 
     const handleComment = () => {
-
     };
 
     const handleDelete = () => {
-
     };
 
+    const isOwnProfile = currentUserName && profileUser
+        ? currentUserName === profileUser.username
+        : false;
 
-    if (!profileUser) {
+
+    if (loading) {
         return (
             <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
                 Loading profile...
@@ -73,7 +113,8 @@ export default function ProfilePage() {
                         <div className="flex justify-between items-start -mt-16 mb-4">
                             <div className="relative">
                                 <div className="w-32 h-32 rounded-full border-4 border-zinc-900 bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center text-4xl font-bold shadow-xl">
-                                    {profileUser.name.charAt(0)}
+                                    {profileUser?.name?.charAt(0) || profileUser?.username?.charAt(0) || "U"}
+
                                 </div>
                                 <button className="absolute bottom-1 right-1 w-9 h-9 bg-zinc-800 hover:bg-zinc-700 rounded-full flex items-center justify-center border-2 border-zinc-900 transition">
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,9 +123,22 @@ export default function ProfilePage() {
                                     </svg>
                                 </button>
                             </div>
-                            <button className="mt-4 bg-zinc-800 hover:bg-zinc-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200 text-sm">
-                                Edit Profile
-                            </button>
+
+                            {isOwnProfile ? (
+                                <button className="mt-4 bg-zinc-800 hover:bg-zinc-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200 text-sm">
+                                    Edit Profile
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={isFollowing ? handleUnfollow : handleFollow}
+                                    className={`mt-4 font-medium py-2 px-6 rounded-lg transition duration-200 text-sm ${isFollowing
+                                            ? 'bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700'
+                                            : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                        }`}
+                                >
+                                    {isFollowing ? 'Unfollow' : 'Follow'}
+                                </button>
+                            )}
                         </div>
 
                         <div className="mb-4">
@@ -100,12 +154,12 @@ export default function ProfilePage() {
                                 <p className="text-xl font-bold">{posts.length}</p>
                                 <p className="text-zinc-400 text-xs">Posts</p>
                             </div>
-                            <div className="text-center">
-                                <p className="text-xl font-bold">0</p>
+                            <div className="text-center cursor-pointer hover:opacity-80 transition">
+                                <p className="text-xl font-bold">{followersCount}</p>
                                 <p className="text-zinc-400 text-xs">Followers</p>
                             </div>
-                            <div className="text-center">
-                                <p className="text-xl font-bold">0</p>
+                            <div className="text-center cursor-pointer hover:opacity-80 transition">
+                                <p className="text-xl font-bold">{followingCount}</p>
                                 <p className="text-zinc-400 text-xs">Following</p>
                             </div>
                             <div className="text-center ml-auto">
@@ -157,10 +211,14 @@ export default function ProfilePage() {
 
                 <section>
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold text-zinc-300">My Posts</h3>
-                        <Link to="/createpost" className="text-zinc-400 hover:text-white text-sm font-medium transition">
-                            + Create Post
-                        </Link>
+                        <h3 className="text-lg font-semibold text-zinc-300">
+                            {isOwnProfile ? 'My Posts' : `${profileUser.name}'s Posts`}
+                        </h3>
+                        {isOwnProfile && (
+                            <Link to="/createpost" className="text-zinc-400 hover:text-white text-sm font-medium transition">
+                                + Create Post
+                            </Link>
+                        )}
                     </div>
 
                     {activeTab === 'posts' && (
@@ -181,13 +239,17 @@ export default function ProfilePage() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     <h3 className="text-lg font-semibold text-zinc-300 mb-2">No posts yet</h3>
-                                    <p className="text-zinc-500 text-sm mb-4">Share your first post with your followers</p>
-                                    <Link to="/createpost" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-lg transition">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-                                        </svg>
-                                        Create Post
-                                    </Link>
+                                    <p className="text-zinc-500 text-sm mb-4">
+                                        {isOwnProfile ? 'Share your first post with your followers' : 'This user hasn\'t posted anything yet'}
+                                    </p>
+                                    {isOwnProfile && (
+                                        <Link to="/createpost" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-lg transition">
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Create Post
+                                        </Link>
+                                    )}
                                 </div>
                             )}
                         </div>
