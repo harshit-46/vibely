@@ -8,12 +8,17 @@ export default function ProfilePage() {
     const { username } = useParams();
 
     const [profileUser, setProfileUser] = useState(null);
+    const [followInfo, setFollowInfo] = useState({
+        isFollowing: false,
+        followersCount: 0,
+        followingCount: 0
+    });
     const [posts, setPosts] = useState([]);
 
     const [activeTab, setActiveTab] = useState('posts');
 
     const { user } = useAuth();
-    const currentUserName = user?.username ?? null;
+    const loggedInUser = user?.username ?? null;
 
     const loading = !profileUser;
 
@@ -53,21 +58,93 @@ export default function ProfilePage() {
         };
     }, [username]);
 
+    useEffect(() => {
+        if (!profileUser) return;
+
+        const fetchFollowInfo = async () => {
+            try {
+                const res = await fetch(
+                    `http://localhost:3000/api/follow/status/${username}`,
+                    { credentials: 'include' }
+                );
+
+                if (!res.ok) {
+                    throw new Error(`Status ${res.status}`);
+                }
+                const data = await res.json();
+                setFollowInfo(data);
+            } catch (err) {
+                console.error("Failed to fetch follow info:", err);
+                setFollowInfo({
+                    isFollowing: false,
+                    followersCount: 0,
+                    followingCount: 0
+                });
+            }
+        };
+
+        fetchFollowInfo();
+    }, [profileUser, loggedInUser]);
+
+    const { isFollowing, followersCount, followingCount } = followInfo;
 
     const handleLike = useCallback(() => { }, []);
     const handleDelete = useCallback(() => { }, []);
-    const handleFollow = useCallback(() => { }, []);
-    const handleUnfollow = useCallback(() => { }, []);
+
+    const handleFollow = useCallback(async (userId) => {
+        setFollowInfo(prev => ({
+            ...prev,
+            isFollowing: true,
+            followersCount: prev.followersCount + 1,
+        }));
+
+        try {
+            await fetch("http://localhost:3000/api/follow", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({ userId }),
+            });
+        } catch (err) {
+            console.error("Follow failed:", err);
+            setFollowInfo(prev => ({
+                ...prev,
+                isFollowing: false,
+                followersCount: prev.followersCount - 1,
+            }));
+        }
+    }, []);
+
+    const handleUnfollow = useCallback(async (userId) => {
+        setFollowInfo(prev => ({
+            ...prev,
+            isFollowing: false,
+            followersCount: Math.max(0, prev.followersCount - 1),
+        }));
+
+        try {
+            await fetch(`http://localhost:3000/api/follow/${userId}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+        } catch (err) {
+            console.error("Unfollow failed:", err);
+
+            setFollowInfo(prev => ({
+                ...prev,
+                isFollowing: true,
+                followersCount: prev.followersCount + 1,
+            }));
+        }
+    }, []);
+
 
     const isOwnProfile =
-        currentUserName && profileUser?.username
-            ? currentUserName === profileUser.username
+        loggedInUser && profileUser?.username
+            ? loggedInUser === profileUser.username
             : false;
-
-
-    const isFollowing = false;
-    const followersCount = 777;
-    const followingCount = 77;
 
     if (loading) {
         return (
@@ -76,6 +153,15 @@ export default function ProfilePage() {
             </div>
         );
     }
+
+    if (!loading && !profileUser) {
+        return (
+            <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
+                User not found
+            </div>
+        );
+    }
+
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white">
@@ -101,10 +187,10 @@ export default function ProfilePage() {
                                 </button>
                             ) : (
                                 <button
-                                    onClick={isFollowing ? handleUnfollow : handleFollow}
+                                    onClick={() => isFollowing ? handleUnfollow(profileUser._id) : handleFollow(profileUser._id)}
                                     className={`mt-4 px-6 py-2 rounded-lg text-sm font-medium ${isFollowing
-                                            ? 'bg-zinc-800 hover:bg-zinc-700'
-                                            : 'bg-blue-600 hover:bg-blue-700'
+                                        ? 'bg-zinc-800 hover:bg-zinc-700'
+                                        : 'bg-blue-600 hover:bg-blue-700'
                                         }`}
                                 >
                                     {isFollowing ? 'Unfollow' : 'Follow'}
@@ -167,7 +253,7 @@ export default function ProfilePage() {
                                 <Post
                                     key={post._id}
                                     post={post}
-                                    profileUser={profileUser}
+                                    loggedInUser={loggedInUser}
                                     onLike={handleLike}
                                     onDelete={handleDelete}
                                 />

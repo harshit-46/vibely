@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { timeAgo } from '../utils/timeAgo';
 
-function Post({ post, profileUser, onLike, onComment, onDelete }) {
+function Post({ post, loggedInUser , onLike, onComment, onDelete }) {
     const [showComments, setShowComments] = useState(false);
     const [commentText, setCommentText] = useState('');
     const [showMenu, setShowMenu] = useState(false);
@@ -27,8 +27,8 @@ function Post({ post, profileUser, onLike, onComment, onDelete }) {
     );
 
     const isOwnPost =
-        profileUser?._id && post?.userId?._id
-            ? profileUser._id === post.userId._id
+        loggedInUser && post?.userId?.username
+            ? loggedInUser === post?.userId?.username
             : false;
 
     return (
@@ -36,7 +36,7 @@ function Post({ post, profileUser, onLike, onComment, onDelete }) {
             {/* HEADER */}
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                    <Link to={`/profile/${post.userId.username}`} className="shrink-0">
+                    <Link to={`/u/${post.userId.username}`} className="shrink-0">
                         <div className="w-11 h-11 rounded-full bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center text-sm font-semibold">
                             {(post.userId?.name || post.userId?.username || 'U')
                                 .charAt(0)
@@ -45,13 +45,13 @@ function Post({ post, profileUser, onLike, onComment, onDelete }) {
                     </Link>
 
                     <div>
-                        <Link to={`/profile/${post.userId.username}`} className="hover:underline">
+                        <Link to={`/u/${post.userId.username}`} className="">
                             <h4 className="font-semibold text-sm text-white">
                                 {post.userId?.name || 'Unknown'}
                             </h4>
                         </Link>
                         <div className="flex items-center gap-2 text-xs text-zinc-400">
-                            <Link to={`/profile/${post.userId.username}`} className="hover:underline">
+                            <Link to={`/u/${post.userId.username}`} className="">
                                 @{post.userId?.username || 'unknown'}
                             </Link>
                             <span>•</span>
