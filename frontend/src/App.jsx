@@ -7,6 +7,7 @@ import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import CreatePost from "./pages/CreatePost";
 import ForgotPassword from "./pages/ForgotPassword";
+import ChatPage from "./pages/chat";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/feed" element={ <ProtectedRoute> <Feed /> </ProtectedRoute> }/>
         <Route path="/search" element={ <ProtectedRoute> <Search /> </ProtectedRoute> }/>
         <Route path="/createpost" element={ <ProtectedRoute> <CreatePost /> </ProtectedRoute> }/>
+        <Route path="/chat" element={ <ProtectedRoute> <ChatPage /> </ProtectedRoute> }/>
         <Route path="/u/:username" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> }/>
       </Routes>
   );

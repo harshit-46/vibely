@@ -75,12 +75,19 @@ function Navbar({ currentPage = 'home' }) {
                             + New Post
                         </Link>
 
+                        {/* Chat */}
+                        <NavItem to="/chat" active={currentPage === 'chat'}>
+                            Messages
+                        </NavItem>
+
+
+
                         {/* Profile */}
                         <Link
                             to={currentUser?.username ? `/u/${currentUser.username}` : '#'}
                             className={`flex items-center gap-2 h-10 px-3 rounded-lg transition ${currentPage === 'profile'
-                                    ? 'bg-zinc-800 text-white'
-                                    : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
+                                ? 'bg-zinc-800 text-white'
+                                : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
                                 }`}
                         >
                             {currentUser?.profileImage ? (
@@ -153,8 +160,8 @@ const NavItem = React.memo(({ to, active, children }) => (
     <Link
         to={to}
         className={`flex items-center justify-center h-10 px-3 rounded-lg transition ${active
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
+            ? 'bg-zinc-800 text-white'
+            : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
             }`}
     >
         <span className="text-sm">{children}</span>
