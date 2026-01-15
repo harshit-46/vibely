@@ -8,6 +8,8 @@ const apiFollowRoutes = require("./routes/apiFollow");
 const apiFeedRoutes = require("./routes/apiFeed");
 const apiCommentRoutes = require("./routes/apiComment");
 const apiLikeRoutes = require("./routes/apiLike");
+const chatRoutes = require("./routes/chat.routes");
+const messageRoutes = require("./routes/message.routes");
 const apiConversationRoutes = require("./routes/conversation.routes");
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
@@ -32,7 +34,9 @@ app.use("/api/search" , apiSearchRoutes);
 app.use("/api/follow" , apiFollowRoutes);
 app.use("/api/feed" , apiFeedRoutes);
 app.use("/api/comments" , apiCommentRoutes);
-app.use("/api/conversation" , apiConversationRoutes);
+app.use("/api/chats", chatRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/conversations" , apiConversationRoutes);
 
 app.get("/", (req, res) => {
     res.status(200).send("Vibely API running 🚀");

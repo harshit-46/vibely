@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Post from '../components/Post';
-import { useParams , useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import { useAuth } from '../context/useAuth';
 
@@ -167,22 +167,37 @@ export default function ProfilePage() {
     }, []);
 
     const handleMessage = async () => {
-        if (!profileUser) return;
+        if (!profileUser?._id) return;
 
-        try{
-            await fetch("http://localhost:3000/api/conversations", {
+        try {
+            const res = await fetch(
+                `http://localhost:3000/api/conversations`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        receiverId: profileUser._id,
+                    }),
+                }
+            );
 
-            });
-        } catch(err){
-            console.error("Error initiating message:", err);
-            return;
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || "Failed to open chat");
+            }
+
+            const conversationId = data.conversation._id;
+            console.log("c_id : ",conversationId);
+
+            navigate(`/chat?${conversationId}`);
+        } catch (error) {
+            console.error("Open chat error:", error);
         }
-
-        const conversationId = "25";
-        navigate(`/chat/${conversationId}`);
     };
-
-
 
     const isOwnProfile =
         loggedInUser && profileUser?.username
