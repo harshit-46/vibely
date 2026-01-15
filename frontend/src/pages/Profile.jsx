@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Post from '../components/Post';
-import { useParams } from 'react-router-dom';
+import { useParams , useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import { useAuth } from '../context/useAuth';
 
 export default function ProfilePage() {
+    const navigate = useNavigate();
     const { username } = useParams();
 
     const [profileUser, setProfileUser] = useState(null);
@@ -165,6 +166,22 @@ export default function ProfilePage() {
         );
     }, []);
 
+    const handleMessage = async () => {
+        if (!profileUser) return;
+
+        try{
+            await fetch("http://localhost:3000/api/conversations", {
+
+            });
+        } catch(err){
+            console.error("Error initiating message:", err);
+            return;
+        }
+
+        const conversationId = "25";
+        navigate(`/chat/${conversationId}`);
+    };
+
 
 
     const isOwnProfile =
@@ -230,6 +247,13 @@ export default function ProfilePage() {
                         <p className="text-zinc-400 text-sm mb-4">
                             @{profileUser?.username || 'unknown'}
                         </p>
+
+
+                        {isOwnProfile ? (<p></p>) : (<button className='text-white bg-zinc-600 p-2 border border-black rounded-md cursor-pointer'
+                            onClick={handleMessage}
+                        >
+                            Message
+                        </button>)}
 
                         <div className="flex gap-6 border-t border-zinc-800 pt-4">
                             <div>

@@ -16,6 +16,8 @@ export default function UserCard({ user, currentUser, onFollow }) {
                         </div>
                     </Link>
 
+
+
                     {/* User Info */}
                     <div className="flex-1 min-w-0">
                         <Link to={`/u/${user.username}`} className="block hover:underline">
@@ -46,7 +48,7 @@ export default function UserCard({ user, currentUser, onFollow }) {
                     <button
                         onClick={() => onFollow(user.id)}
                         className={`font-medium px-6 py-2 rounded-lg transition text-sm shrink-0 ${isFollowing
-                                ? 'bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700'
+                                ? 'bg-red-800 hover:bg-zinc-700 text-white border border-zinc-700'
                                 : 'bg-blue-600 hover:bg-blue-700 text-white'
                             }`}
                     >
