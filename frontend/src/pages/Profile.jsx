@@ -191,9 +191,8 @@ export default function ProfilePage() {
             }
 
             const conversationId = data.conversation._id;
-            console.log("c_id : ",conversationId);
 
-            navigate(`/chat?${conversationId}`);
+            navigate(`/chat/t/${conversationId}`);
         } catch (error) {
             console.error("Open chat error:", error);
         }

@@ -27,7 +27,7 @@ exports.getOrCreateConversation = async (req, res) => {
             lastMessageAt: new Date(),
         });
 
-        conversation = await conversationModel.populate(
+        conversation = await conversation.populate(
             "participants",
             "username name"
         );
@@ -35,6 +35,24 @@ exports.getOrCreateConversation = async (req, res) => {
         return res.status(201).json({ conversation });
     } catch (error) {
         console.error("Conversation error:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.getConversationById = async (req, res) => {
+    try {
+        const { conversationId } = req.params;
+
+        const conversation = await conversationModel.findById(conversationId)
+            .populate("participants", "username name profileImage");
+
+        if (!conversation) {
+            return res.status(404).json({ message: "Conversation not found" });
+        }
+
+        return res.status(200).json({ conversation });
+    } catch (error) {
+        console.error("Get conversation error:", error);
         res.status(500).json({ message: "Server error" });
     }
 };

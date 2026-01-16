@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/search" element={ <ProtectedRoute> <Search /> </ProtectedRoute> }/>
         <Route path="/createpost" element={ <ProtectedRoute> <CreatePost /> </ProtectedRoute> }/>
         <Route path="/chat" element={ <ProtectedRoute> <ChatPage /> </ProtectedRoute> }/>
-        <Route path="/chat/:userid" element={ <ProtectedRoute> <ChatPage /> </ProtectedRoute> }/>
+        <Route path="/chat/t/:conversationId" element={ <ProtectedRoute> <ChatPage /> </ProtectedRoute> }/>
         <Route path="/u/:username" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> }/>
       </Routes>
   );
