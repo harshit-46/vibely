@@ -1,3 +1,4 @@
+const http = require("http");
 const express = require('express');
 const cors = require('cors');
 const apiAuthRoutes = require("./routes/apiAuth");
@@ -14,6 +15,8 @@ const apiConversationRoutes = require("./routes/conversation.routes");
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
+const { initSocket } = require("./socket/socket");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -29,19 +32,24 @@ app.use(cookieParser());
 app.use("/api/auth", apiAuthRoutes);
 app.use("/api/users", apiUserRoutes);
 app.use("/api/posts", apiPostRoutes);
-app.use("/api/posts" , apiLikeRoutes);
-app.use("/api/search" , apiSearchRoutes);
-app.use("/api/follow" , apiFollowRoutes);
-app.use("/api/feed" , apiFeedRoutes);
-app.use("/api/comments" , apiCommentRoutes);
+app.use("/api/posts", apiLikeRoutes);
+app.use("/api/search", apiSearchRoutes);
+app.use("/api/follow", apiFollowRoutes);
+app.use("/api/feed", apiFeedRoutes);
+app.use("/api/comments", apiCommentRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/messages", messageRoutes);
-app.use("/api/conversations" , apiConversationRoutes);
+app.use("/api/conversations", apiConversationRoutes);
 
 app.get("/", (req, res) => {
     res.status(200).send("Vibely API running 🚀");
-});  
+});
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+const server = http.createServer(app);
+
+// initialize socket.io
+initSocket(server);
+
+server.listen(PORT, () => {
+    console.log(`Server + Socket.IO running on port ${PORT}`);
 });

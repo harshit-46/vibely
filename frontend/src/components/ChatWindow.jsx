@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Send, MoreVertical, Phone, Video } from "lucide-react";
 import { useAuth } from "../context/useAuth";
+import socket from "../socket";
 
 function ChatWindow({ selectedChat, onBack }) {
     const { user } = useAuth();
@@ -9,6 +10,26 @@ function ChatWindow({ selectedChat, onBack }) {
     const [loading, setLoading] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const messagesEndRef = useRef(null);
+
+
+    useEffect(() => {
+        if (!selectedChat) return;
+
+        socket.emit("joinConversation", selectedChat._id);
+
+        return () => {
+            socket.off("receiveMessage");
+        };
+    }, [selectedChat]);
+
+    useEffect(() => {
+        socket.on("receiveMessage", (message) => {
+            setMessages((prev) => [...prev, message]);
+        });
+
+        return () => socket.off("receiveMessage");
+    }, []);
+
 
     useEffect(() => {
         if (selectedChat) {
@@ -22,7 +43,7 @@ function ChatWindow({ selectedChat, onBack }) {
 
     const fetchMessages = async () => {
         if (!selectedChat) return;
-        
+
         setLoading(true);
         try {
             const res = await fetch(
@@ -38,46 +59,20 @@ function ChatWindow({ selectedChat, onBack }) {
         }
     };
 
-    const handleSendMessage = async (e) => {
+    const handleSendMessage = (e) => {
         e.preventDefault();
-        if (!messageText.trim() || !selectedChat) return;
+        if (!messageText.trim()) return;
 
-        const tempMessage = {
-            _id: Date.now().toString(),
+        socket.emit("sendMessage", {
+            conversationId: selectedChat._id,
             content: messageText,
-            senderId: user._id,
-            createdAt: new Date().toISOString(),
-            temp: true,
-        };
+        });
 
-        setMessages((prev) => [...prev, tempMessage]);
         setMessageText("");
-
-        try {
-            const res = await fetch("http://localhost:3000/api/messages", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    chatId: selectedChat._id,
-                    content: messageText,
-                }),
-            });
-
-            const data = await res.json();
-
-            setMessages((prev) =>
-                prev.map((msg) =>
-                    msg._id === tempMessage._id ? data.message : msg
-                )
-            );
-        } catch (err) {
-            console.error("Failed to send message", err);
-            setMessages((prev) => prev.filter((msg) => msg._id !== tempMessage._id));
-        }
     };
+
+
+
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -187,7 +182,7 @@ function ChatWindow({ selectedChat, onBack }) {
                         const showDate =
                             index === 0 ||
                             new Date(messages[index - 1].createdAt).toDateString() !==
-                                new Date(message.createdAt).toDateString();
+                            new Date(message.createdAt).toDateString();
 
                         return (
                             <React.Fragment key={message._id}>
@@ -207,26 +202,23 @@ function ChatWindow({ selectedChat, onBack }) {
                                 )}
 
                                 <div
-                                    className={`flex ${
-                                        isOwn ? "justify-end" : "justify-start"
-                                    }`}
+                                    className={`flex ${isOwn ? "justify-end" : "justify-start"
+                                        }`}
                                 >
                                     <div
-                                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
-                                            isOwn
-                                                ? "bg-blue-600 text-white"
-                                                : "bg-zinc-800 text-zinc-200"
-                                        } ${message.temp ? "opacity-60" : ""}`}
+                                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${isOwn
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-zinc-800 text-zinc-200"
+                                            } ${message.temp ? "opacity-60" : ""}`}
                                     >
                                         <p className="text-sm wrap-break-word">
                                             {message.content}
                                         </p>
                                         <span
-                                            className={`text-xs mt-1 block ${
-                                                isOwn
-                                                    ? "text-blue-200"
-                                                    : "text-zinc-500"
-                                            }`}
+                                            className={`text-xs mt-1 block ${isOwn
+                                                ? "text-blue-200"
+                                                : "text-zinc-500"
+                                                }`}
                                         >
                                             {formatMessageTime(message.createdAt)}
                                         </span>
