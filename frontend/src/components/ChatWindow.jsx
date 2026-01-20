@@ -126,7 +126,6 @@ function ChatWindow() {
 
     if (!conversationId) return null;
 
-
     useEffect(() => {
         if (!socket) return;
 
@@ -294,8 +293,6 @@ function ChatWindow() {
                 onSubmit={handleSendMessage}
                 className="p-4 border-t border-zinc-800 flex gap-2"
             >
-
-
                 <div className="relative">
                     <button
                         type="button"

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
+import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useAuth } from "../context/useAuth";
 
 export default function Signup() {
@@ -14,15 +15,12 @@ export default function Signup() {
     });
 
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState("");
 
-    // ⏳ Wait for auth check
     if (loading) return null;
 
-    // 🔁 If already logged in → redirect
     if (user) {
         return <Navigate to="/feed" replace />;
     }
@@ -33,9 +31,7 @@ export default function Signup() {
             [e.target.name]: e.target.value,
         }));
 
-        if (errors[e.target.name]) {
-            setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
-        }
+        setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
         setServerError("");
     };
 
@@ -50,16 +46,10 @@ export default function Signup() {
             newErrors.username = "Only letters, numbers & underscores allowed";
         }
 
-        if (!formData.email.trim()) {
-            newErrors.email = "Email is required";
-        }
+        if (!formData.email.trim()) newErrors.email = "Email is required";
 
         if (formData.password.length < 6) {
             newErrors.password = "Password must be at least 6 characters";
-        }
-
-        if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = "Passwords do not match";
         }
 
         return newErrors;
@@ -84,7 +74,6 @@ export default function Signup() {
                 email: formData.email,
                 password: formData.password,
             });
-
         } catch (err) {
             setServerError(
                 err?.response?.data?.message || "Signup failed. Try again."
@@ -95,107 +84,146 @@ export default function Signup() {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4 py-8">
+        <div
+            className="min-h-screen flex items-center justify-center p-8"
+            style={{ backgroundColor: "#FFF8F0" }}
+        >
             <div className="w-full max-w-md">
-                {/* Heading */}
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-white mb-2">
-                        Create Account
-                    </h1>
-                    <p className="text-zinc-400 text-sm">Join Vibely today</p>
+                <div className="flex items-center gap-2 mb-12">
+                    <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center">
+                        <div className="w-5 h-5 border-2 border-white rounded-full" />
+                    </div>
+                    <span className="text-xl font-semibold">Vibely</span>
                 </div>
 
-                {/* Card */}
-                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-xl">
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Server error */}
-                        {serverError && (
-                            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3 text-red-400 text-sm">
-                                {serverError}
+                <div className="mb-8">
+                    <h2 className="text-4xl font-serif mb-3">Create Account</h2>
+                    <p className="text-gray-600">Join Vibely and start connecting</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-2">
+                    {serverError && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <p className="text-red-600 text-sm">{serverError}</p>
+                        </div>
+                    )}
+
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                            Full Name
+                        </label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <User className="h-5 w-5 text-gray-400" />
                             </div>
+                            <input
+                                id="name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="Your full name"
+                                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                            />
+                        </div>
+                        {errors.name && (
+                            <p className="text-red-600 text-xs mt-1">{errors.name}</p>
                         )}
+                    </div>
 
-                        {/* Name */}
-                        <input
-                            name="name"
-                            placeholder="Full Name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white"
-                        />
-                        {errors.name && <p className="text-red-400 text-xs">{errors.name}</p>}
-
-                        {/* Username */}
-                        <input
-                            name="username"
-                            placeholder="Username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white"
-                        />
+                    <div>
+                        <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                            Username
+                        </label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <User className="h-5 w-5 text-gray-400" />
+                            </div>
+                            <input
+                                id="username"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                placeholder="Choose a username"
+                                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                            />
+                        </div>
                         {errors.username && (
-                            <p className="text-red-400 text-xs">{errors.username}</p>
+                            <p className="text-red-600 text-xs mt-1">{errors.username}</p>
                         )}
+                    </div>
 
-                        {/* Email */}
-                        <input
-                            name="email"
-                            type="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white"
-                        />
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                            Email
+                        </label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Mail className="h-5 w-5 text-gray-400" />
+                            </div>
+                            <input
+                                id="email"
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="you@example.com"
+                                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                            />
+                        </div>
                         {errors.email && (
-                            <p className="text-red-400 text-xs">{errors.email}</p>
+                            <p className="text-red-600 text-xs mt-1">{errors.email}</p>
                         )}
+                    </div>
 
-                        {/* Password */}
-                        <input
-                            name="password"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white"
-                        />
+                    <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                            Password
+                        </label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Lock className="h-5 w-5 text-gray-400" />
+                            </div>
+                            <input
+                                id="password"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Create a password"
+                                className="w-full pl-10 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
                         {errors.password && (
-                            <p className="text-red-400 text-xs">{errors.password}</p>
+                            <p className="text-red-600 text-xs mt-1">{errors.password}</p>
                         )}
+                    </div>
 
-                        {/* Confirm */}
-                        <input
-                            name="confirmPassword"
-                            type={showConfirmPassword ? "text" : "password"}
-                            placeholder="Confirm Password"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white"
-                        />
-                        {errors.confirmPassword && (
-                            <p className="text-red-400 text-xs">
-                                {errors.confirmPassword}
-                            </p>
-                        )}
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`mt-2 w-full py-3 rounded-lg font-medium cursor-pointer transition
+                        ${isSubmitting
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-black text-white hover:bg-gray-800"
+                            }`}
+                    >
+                        {isSubmitting ? "Creating account..." : "Create Account"}
+                    </button>
+                </form>
 
-                        {/* Submit */}
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg"
-                        >
-                            {isSubmitting ? "Creating account..." : "Create Account"}
-                        </button>
-                    </form>
-                </div>
-
-                {/* Login link */}
-                <p className="text-center text-zinc-400 text-sm mt-6">
-                    Already have an account?{" "}
-                    <Link to="/" className="text-blue-500 hover:underline">
-                        Sign in
+                <div className="mt-8 text-center text-sm">
+                    <span className="text-gray-600">Already have an account? </span>
+                    <Link to="/" className="text-gray-900 font-semibold">
+                        Sign In
                     </Link>
-                </p>
+                </div>
             </div>
         </div>
     );
