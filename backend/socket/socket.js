@@ -55,7 +55,7 @@ const initSocket = (server) => {
                     conversationId,
                     senderId: socket.userId,
                     content,
-                    seenBy: [socket.userId], 
+                    seenBy: [socket.userId],
                 });
 
                 await Conversation.findByIdAndUpdate(conversationId, {
@@ -74,6 +74,14 @@ const initSocket = (server) => {
             } catch (err) {
                 console.error("Send message error:", err);
             }
+        });
+
+        socket.on("typing", ({ conversationId }) => {
+            socket.to(conversationId).emit("userTyping");
+        });
+
+        socket.on("stopTyping", ({ conversationId }) => {
+            socket.to(conversationId).emit("userStopTyping");
         });
 
         socket.on("disconnect", () => {
