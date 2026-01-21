@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userModel = require("../models/user");
+const isLoggedIn = require("../middlewares/isLoggedin");
 
 router.get("/u/:username", async (req, res) => {
     try {
@@ -19,6 +20,22 @@ router.get("/u/:username", async (req, res) => {
             message: "Failed to fetch user"
         });
     }
+});
+
+router.put("/theme", isLoggedIn, async (req, res) => {
+    const { theme } = req.body;
+
+    if (!["light", "dark"].includes(theme)) {
+        return res.status(400).json({ message: "Invalid theme" });
+    }
+
+    const user = await userModel.findByIdAndUpdate(
+        req.user._id,
+        { theme },
+        { new: true }
+    );
+
+    res.json({ theme: user.theme });
 });
 
 module.exports = router;

@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema({
         default: "local",
     },
     avatar: String,
+    theme : {
+        type: String,
+        enum: ["light", "dark"],
+        default: "light",
+    },
     createdAt: {
         type: Date,
         default: Date.now

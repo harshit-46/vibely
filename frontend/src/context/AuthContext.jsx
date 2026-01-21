@@ -24,6 +24,15 @@ export const AuthProvider = ({ children }) => {
         fetchUser();
     }, []);
 
+    useEffect(() => {
+        if (!user?.theme) return;
+    
+        document.documentElement.classList.toggle(
+            "dark",
+            user.theme === "dark"
+        );
+    }, [user?.theme]);    
+
     const login = async (data) => {
         const res = await axios.post("/auth/login", data);
         setUser(res.data.user);
@@ -42,8 +51,21 @@ export const AuthProvider = ({ children }) => {
         navigate("/", { replace: true });
     };
 
+    const updateTheme = async (theme) => {
+        try {
+            const res = await axios.put("/users/theme", { theme });
+    
+            setUser((prev) => ({
+                ...(prev || {}),
+                theme: res.data.theme,
+            }));
+        } catch (err) {
+            console.error("Theme update failed", err);
+        }
+    };    
+
     return (
-        <AuthContext.Provider value={{ user, loading, login, signup ,logout }}>
+        <AuthContext.Provider value={{ user, loading, login, signup, logout , updateTheme }}>
             {children}
         </AuthContext.Provider>
     );
