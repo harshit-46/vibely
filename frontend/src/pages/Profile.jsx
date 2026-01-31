@@ -220,7 +220,7 @@ export default function ProfilePage() {
 
     return (
         <div className="min-h-screen bg-[#F9FAFB] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex">
-            <main className="flex-1 lg:ml-64 px-4 py-10">
+            <main className="flex-1 px-4 py-10">
                 <div className="max-w-3xl mx-auto">
                     <section className="
                         bg-white dark:bg-neutral-900 

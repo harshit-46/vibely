@@ -16,10 +16,6 @@ function Navbar() {
     const { user, logout, updateTheme } = useAuth();
     const location = useLocation();
 
-    const authRoutes = [ "/" , "/signup", "/resetpassword"];
-
-    const isAuthRoute = authRoutes.includes(location.pathname) || location.pathname.startsWith("/reset-password/");
-
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsRef = useRef(null);
     const [isHovered , setIsHovered] = useState(false);
@@ -76,8 +72,6 @@ function Navbar() {
 
     if (!user) return null;
     const currentUser = user;
-
-    if(isAuthRoute) return null;
 
     return (
         <aside 

@@ -6,14 +6,15 @@ function ChatPage() {
     const { conversationId } = useParams();
 
     return (
-        <div className="flex h-dvh overflow-hidden">
+        <div className="pl-20 flex h-dvh overflow-hidden">
             {/* Main chat area – takes full remaining width */}
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
 
                 {/* Left column: ChatList – visible on desktop, full on mobile when no chat open */}
                 <div className="
-                    w-full md:w-96 pt-6
-                    border-r border-zinc-800 
+                    w-full md:w-96
+                    border-r border-neutral-200
+                    dark:border-zinc-800 
                     flex flex-col 
                     md:bg-zinc-950/95
                     h-full overflow-hidden

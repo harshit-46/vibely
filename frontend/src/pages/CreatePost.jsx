@@ -83,7 +83,7 @@ export default function CreatePost() {
 
     return (
         <div className="min-h-screen bg-[#F9FAFB] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex">
-            <main className="flex-1 lg:ml-64 px-4 py-10">
+            <main className="flex-1 px-4 py-10">
                 <div className="max-w-2xl mx-auto space-y-8">
                     <div className="flex items-center gap-4 mb-8">
                         <div className="w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center text-lg font-semibold text-white shadow-sm">
