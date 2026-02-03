@@ -44,7 +44,7 @@ exports.getConversationById = async (req, res) => {
         const { conversationId } = req.params;
 
         const conversation = await conversationModel.findById(conversationId)
-            .populate("participants", "username name profileImage");
+            .populate("participants", "username name avatar");
 
         if (!conversation) {
             return res.status(404).json({ message: "Conversation not found" });

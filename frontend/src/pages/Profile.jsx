@@ -260,17 +260,17 @@ export default function ProfilePage() {
                                 <div className="
                                     w-32 h-32 rounded-full border-4 border-white dark:border-neutral-900 
                                     bg-neutral-900 flex items-center justify-center 
-                                    text-4xl font-bold text-white shadow-md
+                                    shadow-md
                                 ">
-                                    {profileUser ? (
+                                    {profileUser.avatar ? (
                                         <img
                                             src={profileUser.avatar}
                                             alt={profileUser.name || "User avatar"}
                                             className="h-full w-full object-cover rounded-full"
                                         />
                                     ) : (
-                                        <span className="text-sm font-semibold text-neutral-800 dark:text-white">
-                                            {(profileUser.user.name|| profileUser.user.username || "U")
+                                        <span className="text-4xl font-bold text-neutral-800 dark:text-white">
+                                            {(profileUser.name|| profileUser.username || "U")
                                                 .charAt(0)
                                                 .toUpperCase()}
                                         </span>

@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
                 { username: { $regex: query, $options: "i" } },
                 { name: { $regex: query, $options: "i" } }
             ]
-        }).select("username name bio profileImage");
+        }).select("username name bio avatar followersCount followingCount postCount");
 
         res.json(users);
     } catch (err) {

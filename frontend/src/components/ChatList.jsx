@@ -129,9 +129,19 @@ function ChatList() {
                                         flex items-center justify-center text-white font-semibold shrink-0
                                     `}
                                 >
-                                    {(chat.user?.name || chat.user?.username || "U")
-                                        .charAt(0)
-                                        .toUpperCase()}
+                                    {chat.user?.avatar ?
+                                        (
+                                            <img src={chat.user.avatar}
+                                                alt={chat.user.name}
+                                                className="w-full h-full object-cover rounded-full" />
+                                        ) :
+                                        (
+                                            <span>
+                                                {(chat.user?.name || chat.user?.username || "U")
+                                                    .charAt(0)
+                                                    .toUpperCase()}
+                                            </span>
+                                        )}
                                 </div>
 
                                 <div className="flex-1 min-w-0 text-left">

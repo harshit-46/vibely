@@ -3,8 +3,8 @@ import { useAuth } from '../context/useAuth';
 import useCreatePost from '../hooks/useCreatePost';
 
 export default function CreatePost() {
-    const {createPost} = useCreatePost();
-    const {user} = useAuth();
+    const { createPost } = useCreatePost();
+    const { user } = useAuth();
     const [content, setContent] = useState('');
     const [mediaFile, setMediaFile] = useState(null);
     const [mediaPreview, setMediaPreview] = useState(null);
@@ -87,7 +87,19 @@ export default function CreatePost() {
                 <div className="max-w-2xl mx-auto space-y-8">
                     <div className="flex items-center gap-4 mb-8">
                         <div className="w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center text-lg font-semibold text-white shadow-sm">
-                            {currentUser.name?.charAt(0) || '?'}
+                            {currentUser ? (
+                                <img
+                                    src={currentUser.avatar}
+                                    alt={currentUser.name || "User avatar"}
+                                    className="h-full w-full object-cover rounded-full"
+                                />
+                            ) : (
+                                <span className="text-sm font-semibold text-neutral-800 dark:text-white">
+                                    {(currentUser.name || currentUser.username || "U")
+                                        .charAt(0)
+                                        .toUpperCase()}
+                                </span>
+                            )}
                         </div>
                         <div>
                             <h3 className="font-medium text-base text-neutral-900 dark:text-neutral-100">

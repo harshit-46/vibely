@@ -50,6 +50,10 @@ router.post(
 
             const post = await postModel.create(postData);
 
+            await userModel.findByIdAndUpdate(req.user._id, {
+                $inc: { postCount: 1 }
+            });
+
             res.status(201).json({
                 success: true,
                 post,

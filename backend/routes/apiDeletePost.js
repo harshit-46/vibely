@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const postModel = require("../models/post");
 const commentModel = require("../models/comment");
+const userModel = require("../models/user");
 const isLoggedIn = require("../middlewares/isLoggedin");
 
 router.delete('/:postId/discard', isLoggedIn, async (req, res) => {
@@ -26,7 +27,11 @@ router.delete('/:postId/discard', isLoggedIn, async (req, res) => {
 
         await post.deleteOne();
 
-        const comments = await commentModel.deleteMany({userId , postId});
+        await commentModel.deleteMany({ userId, postId });
+
+        await userModel.findByIdAndUpdate(req.user._id, {
+            $inc: { postCount: -1 }
+        });
 
         return res.status(200).json({ message: "Post deleted successfully" });
 

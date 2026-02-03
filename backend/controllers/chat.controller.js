@@ -8,7 +8,7 @@ exports.getUserChats = async (req, res) => {
         const conversations = await Conversation.find({
             participants: userId,
         })
-            .populate("participants", "username name profileImage")
+            .populate("participants", "username name avatar")
             .sort({ lastMessageAt: -1 });
 
         const chats = await Promise.all(

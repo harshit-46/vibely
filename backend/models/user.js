@@ -33,6 +33,14 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    bio: {
+        type: String,
+        default: ""
+    },
+    postCount: {
+        type: Number,
+        default: 0
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     provider: {
@@ -40,7 +48,10 @@ const userSchema = new mongoose.Schema({
         enum: ["local", "google"],
         default: "local",
     },
-    avatar: String,
+    avatar: {
+        type: String,
+        default: ""
+    },
     theme : {
         type: String,
         enum: ["light", "dark"],
