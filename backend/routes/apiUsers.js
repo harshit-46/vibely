@@ -22,6 +22,50 @@ router.get("/u/:username", async (req, res) => {
     }
 });
 
+router.put("/updateInfo", isLoggedIn, async (req, res) => {
+    try {
+        const { name, username, bio } = req.body;
+
+        const updates = {};
+
+        if (name !== undefined) updates.name = name.trim();
+        if (bio !== undefined) updates.bio = bio.trim();
+
+        if (username !== undefined) {
+            const normalizedUsername = username.trim().toLowerCase();
+
+            // Check if username is taken by another user
+            const existingUser = await userModel.findOne({
+                username: normalizedUsername,
+                _id: { $ne: req.user._id }
+            });
+
+            if (existingUser) {
+                return res.status(400).json({ message: "Username already taken" });
+            }
+
+            updates.username = normalizedUsername;
+        }
+
+        if (Object.keys(updates).length === 0) {
+            return res.status(400).json({ message: "Nothing to update" });
+        }
+
+        const updatedUser = await userModel
+            .findByIdAndUpdate(req.user._id, updates, {
+                new: true,
+                runValidators: true
+            })
+            .select("-password");
+
+        res.status(200).json({ user: updatedUser });
+
+    } catch (err) {
+        console.error("Error updating user info:", err);
+        res.status(500).json({ message: "Failed to update user info" });
+    }
+});
+
 router.put("/theme", isLoggedIn, async (req, res) => {
     const { theme } = req.body;
 
