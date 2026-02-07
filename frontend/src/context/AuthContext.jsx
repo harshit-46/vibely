@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get("/auth/me");
+                const res = await axios.get("/api/auth/me");
                 setUser(res.data.user);
             } catch {
                 setUser(null);
@@ -34,26 +34,26 @@ export const AuthProvider = ({ children }) => {
     }, [user?.theme]);    
 
     const login = async (data) => {
-        const res = await axios.post("/auth/login", data);
+        const res = await axios.post("/api/auth/login", data);
         setUser(res.data.user);
         navigate("/feed", { replace: true });
     };
 
     const signup = async (data) => {
-        const res = await axios.post("/auth/register", data);
+        const res = await axios.post("/api/auth/register", data);
         setUser(res.data.user);
         navigate("/feed", { replace: true });
     };
 
     const logout = async () => {
-        await axios.post("/auth/logout");
+        await axios.post("/api/auth/logout");
         setUser(null);
         navigate("/", { replace: true });
     };
 
     const updateTheme = async (theme) => {
         try {
-            const res = await axios.put("/users/theme", { theme });
+            const res = await axios.put("/api/users/theme", { theme });
     
             setUser((prev) => ({
                 ...(prev || {}),
