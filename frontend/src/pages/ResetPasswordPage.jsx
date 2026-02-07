@@ -24,7 +24,7 @@ export default function ResetPasswordPage() {
             setIsLoading(true);
 
             const res = await fetch(
-                `https://wesnap-five.vercel.app/api/reset/reset-password/${token}`,
+                `https://wesnap-server.onrender.com/api/reset/reset-password/${token}`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

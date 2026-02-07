@@ -29,7 +29,7 @@ function ChatList() {
 
     const fetchChats = async () => {
         try {
-            const res = await fetch("https://wesnap-five.vercel.app/api/chats", {
+            const res = await fetch("https://wesnap-server.onrender.com/api/chats", {
                 credentials: "include",
             });
             if (!res.ok) throw new Error("Failed");
