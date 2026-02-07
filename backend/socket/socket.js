@@ -9,7 +9,7 @@ let io;
 const initSocket = (server) => {
     io = new Server(server, {
         cors: {
-            origin: "https://wesnap-five.vercel.app/",
+            origin: "https://wesnap-five.vercel.app",
             credentials: true,
         },
     });

@@ -31,7 +31,7 @@ connectDB();
 app.use(
     cors({
         origin: [
-            "https://wesnap-five.vercel.app/",
+            "https://wesnap-five.vercel.app",
         ],
         credentials: true,
     })
