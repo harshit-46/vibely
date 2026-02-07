@@ -12,7 +12,7 @@ const useCreatePost = () => {
             formData.append("media", media);
         }
 
-        await api.post("/posts", formData, {
+        await api.post("/api/posts", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
