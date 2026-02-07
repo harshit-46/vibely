@@ -11,7 +11,7 @@ export default function FeedPage() {
     useEffect(() => {
         const fetchFeed = async () => {
             try {
-                const res = await fetch("http://localhost:3000/api/feed", {
+                const res = await fetch("https://wesnap-five.vercel.app/api/feed", {
                     credentials: "include",
                 });
                 const data = await res.json();
@@ -56,7 +56,7 @@ export default function FeedPage() {
         const loadingToast = toast.loading("Deleting post...");
         try {
             const response = await fetch(
-                `http://localhost:3000/api/posts/${postId}/discard`,
+                `https://wesnap-five.vercel.app/api/posts/${postId}/discard`,
                 {
                     method: "DELETE",
                     credentials: "include",

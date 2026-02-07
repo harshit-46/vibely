@@ -28,7 +28,7 @@ function ChatWindow() {
 
         const fetchConversation = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/api/conversations/${conversationId}`, {
+                const res = await fetch(`https://wesnap-five.vercel.app/api/conversations/${conversationId}`, {
                     credentials: "include",
                 });
                 const data = await res.json();
@@ -48,7 +48,7 @@ function ChatWindow() {
         const fetchMessages = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`http://localhost:3000/api/messages/${conversationId}`, {
+                const res = await fetch(`https://wesnap-five.vercel.app/api/messages/${conversationId}`, {
                     credentials: "include",
                 });
                 const data = await res.json();

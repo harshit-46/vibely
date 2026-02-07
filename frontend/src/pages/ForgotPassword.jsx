@@ -20,7 +20,7 @@ export default function ForgotPasswordPage() {
         try {
             setIsLoading(true);
 
-            await fetch("http://localhost:3000/api/reset/forgot-password", {
+            await fetch("https://wesnap-five.vercel.app/api/reset/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),

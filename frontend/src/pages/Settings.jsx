@@ -31,7 +31,7 @@ export default function Settings() {
             setUploadingAvatar(true);
 
             const res = await fetch(
-                "http://localhost:3000/api/posts/update-profile",
+                "https://wesnap-five.vercel.app/api/posts/update-profile",
                 {
                     method: "PUT",
                     credentials: "include",
@@ -62,7 +62,7 @@ export default function Settings() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:3000/api/users/updateInfo", {
+            const res = await fetch("https://wesnap-five.vercel.app/api/users/updateInfo", {
                 method: "PUT",
                 credentials: "include",
                 headers: {

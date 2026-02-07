@@ -29,7 +29,7 @@ function ChatList() {
 
     const fetchChats = async () => {
         try {
-            const res = await fetch("http://localhost:3000/api/chats", {
+            const res = await fetch("https://wesnap-five.vercel.app/api/chats", {
                 credentials: "include",
             });
             if (!res.ok) throw new Error("Failed");

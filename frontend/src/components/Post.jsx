@@ -23,7 +23,7 @@ function Post({ post, index, onLike, onDelete, onCommentAdded }) {
             setLoadingComments(true);
             try {
                 const res = await fetch(
-                    `http://localhost:3000/api/comments/${post._id}`,
+                    `https://wesnap-five.vercel.app/api/comments/${post._id}`,
                     { credentials: "include" }
                 );
                 const data = await res.json();
@@ -40,7 +40,7 @@ function Post({ post, index, onLike, onDelete, onCommentAdded }) {
     const handleLike = async () => {
         try {
             const res = await fetch(
-                `http://localhost:3000/api/posts/${post._id}/like`,
+                `https://wesnap-five.vercel.app/api/posts/${post._id}/like`,
                 {
                     method: "POST",
                     credentials: "include",
@@ -59,7 +59,7 @@ function Post({ post, index, onLike, onDelete, onCommentAdded }) {
             e.preventDefault();
             if (!commentText.trim()) return;
             try {
-                const res = await fetch("http://localhost:3000/api/comments", {
+                const res = await fetch("https://wesnap-five.vercel.app/api/comments", {
                     method: "POST",
                     credentials: "include",
                     headers: {

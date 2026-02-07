@@ -31,7 +31,7 @@ export default function ProfilePage() {
         const fetchUserAndPosts = async () => {
             try {
                 const userResponse = await fetch(
-                    `http://localhost:3000/api/users/u/${username}`,
+                    `https://wesnap-five.vercel.app/api/users/u/${username}`,
                     { credentials: 'include' }
                 );
                 const userData = await userResponse.json();
@@ -40,7 +40,7 @@ export default function ProfilePage() {
                 setProfileUser(userData.user);
 
                 const postResponse = await fetch(
-                    `http://localhost:3000/api/posts/user/${userData.user._id}`,
+                    `https://wesnap-five.vercel.app/api/posts/user/${userData.user._id}`,
                     { credentials: 'include' }
                 );
                 const postData = await postResponse.json();
@@ -65,7 +65,7 @@ export default function ProfilePage() {
         const fetchFollowInfo = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:3000/api/follow/status/${username}`,
+                    `https://wesnap-five.vercel.app/api/follow/status/${username}`,
                     { credentials: 'include' }
                 );
 
@@ -109,7 +109,7 @@ export default function ProfilePage() {
         const loadingToast = toast.loading("Deleting post...");
         try {
             const response = await fetch(
-                `http://localhost:3000/api/posts/${postId}/discard`,
+                `https://wesnap-five.vercel.app/api/posts/${postId}/discard`,
                 {
                     method: "DELETE",
                     credentials: "include",
@@ -140,7 +140,7 @@ export default function ProfilePage() {
         }));
 
         try {
-            await fetch("http://localhost:3000/api/follow", {
+            await fetch("https://wesnap-five.vercel.app/api/follow", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -166,7 +166,7 @@ export default function ProfilePage() {
         }));
 
         try {
-            await fetch(`http://localhost:3000/api/follow/${userId}`, {
+            await fetch(`https://wesnap-five.vercel.app/api/follow/${userId}`, {
                 method: "DELETE",
                 credentials: "include",
             });
@@ -196,7 +196,7 @@ export default function ProfilePage() {
 
         try {
             const res = await fetch(
-                `http://localhost:3000/api/conversations`,
+                `https://wesnap-five.vercel.app/api/conversations`,
                 {
                     method: "POST",
                     credentials: "include",

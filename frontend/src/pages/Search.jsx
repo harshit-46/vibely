@@ -20,7 +20,7 @@ export default function SearchUsersPage() {
             const fetchUsers = async () => {
                 try {
                     const res = await fetch(
-                        `http://localhost:3000/api/search?query=${searchQuery}`,
+                        `https://wesnap-five.vercel.app/api/search?query=${searchQuery}`,
                         { credentials: "include" }
                     );
                     const data = await res.json();

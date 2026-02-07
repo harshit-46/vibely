@@ -15,7 +15,7 @@ export default function Activity() {
 
         const fetchActivities = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/api/activities/${userId}`,
+                const res = await fetch(`https://wesnap-five.vercel.app/api/activities/${userId}`,
                     { credentials: 'include' }
                 );
 
@@ -129,7 +129,7 @@ export default function Activity() {
 
         const fetchUserStats = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/api/stats/${userId}`,
+                const res = await fetch(`https://wesnap-five.vercel.app/api/stats/${userId}`,
                     { credentials: 'include' }
                 );
 
