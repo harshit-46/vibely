@@ -33,7 +33,8 @@ router.post("/register", async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "lax",
+            secure : true,
+            sameSite: "none"
         });
 
         res.json({
@@ -81,7 +82,8 @@ router.post("/login", async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "lax",
+            secure : true,
+            sameSite: "none"
         });
 
         res.json({

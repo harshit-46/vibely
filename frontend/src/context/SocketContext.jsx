@@ -13,7 +13,8 @@ export const SocketProvider = ({ children }) => {
 
         const s = io(import.meta.env.VITE_API_URL, {
             withCredentials: true,
-            autoConnect: true
+            transports : ["websocket"],
+            autoConnect: false
         });
 
         s.on("connect", () => {
