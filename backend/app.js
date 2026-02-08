@@ -1,4 +1,4 @@
-import path from 'path';
+const path = require ('path');
 const http = require("http");
 const express = require('express');
 const cors = require('cors');
@@ -40,7 +40,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/auth", apiAuthRoutes);
 app.use("/api/reset", apiForgotPasswordRoutes);
 app.use("/api/users", apiUserRoutes);
