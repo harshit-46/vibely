@@ -17,6 +17,8 @@ export const SocketProvider = ({ children }) => {
             autoConnect: false
         });
 
+        s.connect();
+
         s.on("connect", () => {
             console.log("✅ Socket connected:", s.id);
         });
