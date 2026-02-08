@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const User = require("../models/user");
 const sendEmail = require("../mailer/sendEmail");
+const emailHtml = require("../mailer/templates/resetPasswordEmail");
 
 exports.forgotPassword = async (req, res) => {
     try {
@@ -29,16 +30,12 @@ exports.forgotPassword = async (req, res) => {
 
         await user.save();
 
-        const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
         await sendEmail({
             to: user.email,
-            subject: "Reset your Vibely password",
-            html: `
-            <p>You requested a password reset.</p>
-            <p><a href="${resetUrl}">Click here to reset your password</a></p>
-            <p>This link expires in 10 minutes.</p>
-            `,
+            subject: "Reset your wesnap password",
+            html: emailHtml(resetUrl , user.name),
         });
 
         res.status(200).json({ message: "Reset link sent" });
