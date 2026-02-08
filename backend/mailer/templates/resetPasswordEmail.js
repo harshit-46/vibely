@@ -17,7 +17,7 @@ const resetEmailHtml = (resetUrl, userName ) => `
                 <tr>
                     <td style="text-align:center; padding-bottom:24px;">
                     <h1 style="margin:0; font-size:22px; color:#111;">
-                        Reset your Vibely password
+                        Reset your WeSnap password
                     </h1>
                 </td>
             </tr>
@@ -28,7 +28,7 @@ const resetEmailHtml = (resetUrl, userName ) => `
                     <p style="margin-top:0;">Hi ${userName},</p>
 
                     <p>
-                        We received a request to reset your Vibely password.
+                        We received a request to reset your WeSnap password.
                         Click the button below to set a new one.
                     </p>
 
@@ -54,7 +54,7 @@ const resetEmailHtml = (resetUrl, userName ) => `
                 </p>
 
                 <p style="margin-bottom:0;">
-                    — Vibely Team
+                    — WeSnap Team
                     </p>
             </td>
             </tr>
