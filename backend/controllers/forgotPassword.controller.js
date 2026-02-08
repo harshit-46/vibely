@@ -30,6 +30,9 @@ exports.forgotPassword = async (req, res) => {
 
         await user.save();
 
+        console.log("FRONTEND_URL =", process.env.FRONTEND_URL);
+        console.log("RESEND_API_KEY =", process.env.RESEND_API_KEY ? "SET" : "MISSING");
+
         const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
         await sendEmail({
