@@ -1,3 +1,6 @@
+console.log("🔥 FORGOT PASSWORD CONTROLLER LOADED 🔥");
+
+
 const crypto = require("crypto");
 const User = require("../models/user");
 const sendEmail = require("../mailer/sendEmail");
@@ -35,13 +38,15 @@ exports.forgotPassword = async (req, res) => {
 
         const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-        await sendEmail({
+        sendEmail({
             to: user.email,
             subject: "Reset your wesnap password",
             html: emailHtml(resetUrl , user.name),
+        }).catch(err =>  {
+            console.error("Email send failed!" , err);
         });
 
-        res.status(200).json({ message: "Reset link sent" });
+        return res.status(200).json({ message: "Reset link sent" });
 
     } catch (err) {
         console.error("FORGOT PASSWORD ERROR MESSAGE:", err.message);
