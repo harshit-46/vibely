@@ -20,15 +20,24 @@ export default function ForgotPasswordPage() {
         try {
             setIsLoading(true);
 
-            await fetch("https://wesnap-server.onrender.com/api/reset/forgot-password", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
-            });
+            const res = await fetch(
+                "https://wesnap-server.onrender.com/api/reset/forgot-password",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email }),
+                }
+            );
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || "Failed to send reset email");
+            }
 
             setIsSuccess(true);
         } catch (err) {
-            setError("Something went wrong. Try again.");
+            setError(err.message || "Something went wrong. Try again.");
         } finally {
             setIsLoading(false);
         }
