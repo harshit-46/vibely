@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 module.exports = async ({ to, subject, html }) => {
     try {
             await resend.emails.send({
-            from: `WeSnap <no-reply@${process.env.MAIL_DOMAIN}>`,
+            from: `WeSnap <onboarding@resend.dev>`,
             to,
             subject,
             html,
