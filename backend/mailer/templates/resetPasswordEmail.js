@@ -76,3 +76,5 @@ const resetEmailHtml = (resetUrl, userName ) => `
     </body>
 </html>
 `;
+
+module.exports = resetEmailHtml;
