@@ -7,26 +7,24 @@ const client = new OAuth2Client(
     process.env.GOOGLE_CLIENT_SECRET
 );
 
-// 🔵 STEP 1: Redirect to Google
 exports.googleLogin = (req, res) => {
     const url = client.generateAuthUrl({
         access_type: "offline",
         prompt: "consent",
         scope: ["profile", "email"],
-        redirect_uri: process.env.GOOGLE_REDIRECT_URI, // 🔥 REQUIRED
+        redirect_uri: process.env.GOOGLE_REDIRECT_URI,
     });
 
     res.redirect(url);
 };
 
-// 🔵 STEP 2: Google callback
 exports.googleCallback = async (req, res) => {
     try {
         const { code } = req.query;
 
         const { tokens } = await client.getToken({
             code,
-            redirect_uri: process.env.GOOGLE_REDIRECT_URI, // 🔥 REQUIRED
+            redirect_uri: process.env.GOOGLE_REDIRECT_URI,
         });
 
         client.setCredentials(tokens);
