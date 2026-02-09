@@ -62,9 +62,9 @@ exports.googleCallback = async (req, res) => {
             sameSite: "none"
         });
 
-        res.redirect("http://localhost:5173/feed");
+        res.redirect("https://wesnap.in/feed");
     } catch (err) {
         console.error("GOOGLE CALLBACK ERROR:", err);
-        res.redirect("http://localhost:5173/?error=google");
+        res.redirect("https://wesnap.in/?error=google");
     }
 };
