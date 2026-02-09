@@ -46,6 +46,8 @@ exports.forgotPassword = async (req, res) => {
             console.error("Email send failed!" , err);
         });
 
+        console.log("AFTER function CALLED!")
+
         return res.status(200).json({ message: "Reset link sent" });
 
     } catch (err) {
