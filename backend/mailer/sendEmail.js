@@ -9,7 +9,7 @@ module.exports = async ({ to, subject, html }) => {
     console.log("📨 SUBJECT:", subject);
     try {
             await resend.emails.send({
-            from: `WeSnap <no-reply@${MAIL_DOMAIN}>`,
+            from: `WeSnap <no-reply@${process.env.MAIL_DOMAIN}>`,
             to,
             subject,
             html,
