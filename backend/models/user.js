@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -14,7 +14,23 @@ const userSchema = new mongoose.Schema({
         required: true,
         lowercase: true
     },
-    password: String,
+
+    password: {
+        type: String,
+        default: null
+    },
+
+    providers: {
+        type: [String],
+        enum: ["local", "google"],
+        default: ["local"]
+    },
+
+    googleId: {
+        type: String,
+        default: null
+    },
+
     profileImage: {
         type: String,
         default: ""
@@ -39,21 +55,18 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    provider: {
-        type: String,
-        enum: ["local", "google"],
-        default: "local",
-    },
+
     avatar: {
         type: String,
         default: ""
     },
-    theme : {
+    theme: {
         type: String,
         enum: ["light", "dark"],
-        default: "light",
+        default: "light"
     },
     createdAt: {
         type: Date,

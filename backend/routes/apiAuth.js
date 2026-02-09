@@ -23,6 +23,7 @@ router.post("/register", async (req, res) => {
             username,
             email,
             password: hash,
+            providers: ["local"]
         });
 
         const token = jwt.sign(
@@ -33,7 +34,7 @@ router.post("/register", async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure : true,
+            secure: true,
             sameSite: "none"
         });
 
@@ -69,6 +70,12 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
+        if (!user.password) {
+            return res.status(400).json({
+                message: "Please sign in using Google"
+            });
+        }
+
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
             return res.status(400).json({ message: "Invalid credentials" });
@@ -82,7 +89,7 @@ router.post("/login", async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure : true,
+            secure: true,
             sameSite: "none"
         });
 
@@ -104,10 +111,10 @@ router.get("/google/callback", googleCallback);
 
 /* LOGOUT */
 router.post("/logout", (req, res) => {
-    res.clearCookie("token" , {
-        httpOnly : true,
-        secure : true,
-        sameSite : "none"
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
     });
     res.json({ message: "Logged out" });
 });

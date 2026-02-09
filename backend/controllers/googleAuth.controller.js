@@ -34,7 +34,7 @@ exports.googleCallback = async (req, res) => {
             audience: process.env.GOOGLE_CLIENT_ID,
         });
 
-        const { email, name, picture } = ticket.getPayload();
+        const { email, name, picture, sub } = ticket.getPayload();
 
         let user = await User.findOne({ email });
 
@@ -44,8 +44,15 @@ exports.googleCallback = async (req, res) => {
                 email,
                 username: email.split("@")[0],
                 avatar: picture,
-                provider: "google",
+                googleId: sub,
+                providers: ["google"],
             });
+        }
+
+        if (!user.providers.includes("google")) {
+            user.googleId = sub;
+            user.providers.push("google");
+            await user.save();
         }
 
         const token = jwt.sign(
@@ -56,8 +63,8 @@ exports.googleCallback = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure : true,
-            sameSite: "none"
+            secure: true,
+            sameSite: "none",
         });
 
         res.redirect("https://wesnap.in/feed");
