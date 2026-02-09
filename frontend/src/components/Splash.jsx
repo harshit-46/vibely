@@ -1,30 +1,22 @@
 import React, { useEffect, useState } from "react";
 
 export default function SplashScreen() {
-    const [isVisible, setIsVisible] = useState(true);
     const [logoScale, setLogoScale] = useState(false);
 
     useEffect(() => {
-        // Trigger logo scale animation
+        // Trigger logo scale animation on mount
         const scaleTimer = setTimeout(() => {
             setLogoScale(true);
         }, 100);
 
-        // Start fade out after 2.5 seconds
-        const fadeTimer = setTimeout(() => {
-            setIsVisible(false);
-        }, 2500);
-
         return () => {
             clearTimeout(scaleTimer);
-            clearTimeout(fadeTimer);
         };
     }, []);
 
     return (
         <div
-            className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"
-                }`}
+            className="min-h-screen flex items-center justify-center relative overflow-hidden"
             style={{ backgroundColor: "#F9FAFB" }}
         >
             {/* Subtle gradient overlay */}
@@ -43,7 +35,7 @@ export default function SplashScreen() {
                         <div className="w-12 h-12 border-[2.5px] border-white rounded-full" />
                     </div>
 
-                    {/* Rotating ring accent */}
+                    {/* Rotating ring accent - continuous animation */}
                     <div className="absolute inset-0 w-20 h-20">
                         <svg className="w-full h-full animate-spin" style={{ animationDuration: "3s" }}>
                             <circle
@@ -70,7 +62,7 @@ export default function SplashScreen() {
                     <div className="h-px w-16 bg-linear-to-r from-transparent via-neutral-300 to-transparent" />
                 </div>
 
-                {/* Elegant loading indicator */}
+                {/* Elegant loading indicator - continuous animation */}
                 <div className={`mt-12 transition-all duration-1000 delay-500 ease-out ${logoScale ? "opacity-100" : "opacity-0"
                     }`}>
                     <div className="flex gap-1">
