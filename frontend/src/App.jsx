@@ -24,7 +24,9 @@ const App = () => {
 
   const { loading } = useAuth();
 
-  if(loading) return <SplashScreen/>
+  if(loading) {
+    return <SplashScreen/>
+  }
 
   return (
     <div className="relative min-h-screen bg-zinc-950 text-zinc-100 antialiased">
